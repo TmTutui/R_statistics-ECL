@@ -1,0 +1,31 @@
+---
+title: "Impact du CO2 sur la température de la planète"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+chenilles = read.table(file = "./01. Primeiro BE/01. Exemplo/chenilles.txt", header = TRUE)
+head(chenilles)
+pairs(chenilles)
+
+```{=latex}
+    $R = 4^{2}$
+```
+
+<!-- plot(CO2$year,CO2$CO2)
+plot(gistemp~CO2, data = CO2) -->
+
+<!-- chenilles['log(Y)'] = log(chenilles$Y)
+plot(X6~log(Y), data = chenilles) -->
+
+
+jpeg("Plot3.jpeg", width = 30, height = 30, units = 'cm', res = 600)
+pairs(chenilles)
+
+lm1 = lm(Y~., data = chenilles)
+summary(lm1)
+
+slm_AIC <- step(lm1, direction= "backward",k = 2)
+slm_BIC = step(lm1, direction= "backward",k = log(nrow(chenilles)))
+
