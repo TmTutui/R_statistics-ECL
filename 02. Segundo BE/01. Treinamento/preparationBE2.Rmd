@@ -153,11 +153,24 @@ plot(silicium_adj)
 
 # Exercice 01 -  Régression logistique
 
+## 1. Décrire les variables
+
+Le fichier neuralgia.txt décrit un ensemble de 60 patients soignés pour névralgie
+avec chacun quatre variables explicatives : l'âge (variabe à modalités
+mutliples), le sexe, (variable à deux modalités) le traitement suivi (variable à
+trois modalités) et la durée (variable à modalités multiples). La variable étudiée
+est Pain et représente la souffrance du patient : 0 s'il ne souffre pas et 1 s'il
+souffre. On visualise les premières lignes de ce fichier importé dans R ci-dessous
+
 ```{r}
 neuralgia = read.table(file = "./02. Segundo BE/01. Treinamento/neuralgia.txt", 
                               header = TRUE)
 head(neuralgia)
-p = length(neuralgia) - 1
-n = nrow(neuralgia)
-x = as.matrix(neuralgia[,-7])
+unique(neuralgia$Treatment)
+unique(neuralgia$Sex)
 ```
+
+## 1. Partager le fichier en un fichier d'apprentissage (80%) et un fichier de test (20%)
+
+
+
