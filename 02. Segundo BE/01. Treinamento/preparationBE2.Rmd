@@ -1,5 +1,5 @@
 ---
-title: "BE1- préparation plans d'expériences et régression logistique"
+title: "BE1- plans d'expériences et régression logistique"
 author: "Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES"
 course: "Statistique appliquée aux sciences de l'ingénieur"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -7,4 +7,35 @@ output:
   html_document: default
   pdf_document: default
 ---
+
+<!-- 
+    For reference:
+    - http://rmarkdown.rstudio.com>
+    - https://lms.fun-mooc.fr/c4x/UPSUD/42001S02/asset/RMarkdown.html
+ -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 6)
+```
+
+# Exercice 01 - Plan d'expériences - Criblage
+
+## 1. Étude du plan
+
+À partir de la lecture de le fichir, on réalise que on a un plan 
+complet, car $n = 2^{P} = 2^{6} = 64$ 
+
+```{r}
+plans_experience = read.table(file = "./02. Segundo BE/01. Treinamento/silicium.txt", 
+                              header = TRUE)
+head(plans_experience)
+p = length(plans_experience) - 1
+n = nrow(plans_experience)
+```
+
+## 2. Ajuster un modèle linéaire de la variable Camber en fonction des 6 facteurs
+
+```{r}
+
+```
 
