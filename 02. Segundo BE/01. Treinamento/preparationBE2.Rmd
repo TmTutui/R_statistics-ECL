@@ -22,20 +22,142 @@ knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 6)
 
 ## 1. Étude du plan
 
-À partir de la lecture de le fichir, on réalise que on a un plan 
-complet, car $n = 2^{P} = 2^{6} = 64$ 
+Selon l'ennonce, chaque experiment est fait 4 fois.
+Donc on a 16 experiences differénts.
+À partir de la lecture de le fichier, on réalise que on a un plan 
+fractionnaire, avec $n = 2^{6-2} = 2^{4} = 16$.
+
+En étudiant les 16 premières lignes, on note que : (A.B.C = E) et (A.C.D = F).
+Autrement dit, Ctemp est une interaction triple de Ltemp, Ltime et Lpress , et
+Catmos est une interaction triple de Ltemp, Lpress, Ctemp. De ce fait, les effets
+principaux se confondent tous avec des interactions triples. Or, comme dans le
+cours, on fait l'hypothèse que les interactions triples sont d'influence
+inenvisageable et donc négligeables. De ce fait, les effets principaux
+peuvent être estimés sans confusion. Cependant, ce n'est pas le cas
+des effets des interactions doubles.
 
 ```{r}
-plans_experience = read.table(file = "./02. Segundo BE/01. Treinamento/silicium.txt", 
+silicium = read.table(file = "./02. Segundo BE/01. Treinamento/silicium.txt", 
                               header = TRUE)
-head(plans_experience)
-p = length(plans_experience) - 1
-n = nrow(plans_experience)
+head(silicium)
+p = length(silicium) - 1
+n = nrow(silicium)
+x = as.matrix(silicium[,-7])
+nombre = t(x)%*%x
 ```
 
-## 2. Ajuster un modèle linéaire de la variable Camber en fonction des 6 facteurs
+## 2. Ajuster un modèle linéaire de la variable Camber en fonction des 6 facteurs. Analyser la sortie summary du modèle
+
+## 3. Retrouver par le calcul le chiffre de la colonne Std Error
+
+En analysant le summary du modèle, on observe que les paramètres 
+Ltemp, Lpress, Ctime et Catoms sont des paramètres explicatifs du modèle. Par contre,
+Ltime et Ctemp n'en sont pas. 
+
+```{r} 
+mod1 = lm(Camber~., data = silicium)
+summary(mod1)
+anova(mod1)
+
+```
+
+Du summury, on obtient que $\sigma = 38.34$. Donc
+
+```{r} 
+library(matlib)
+std_error = (38.34*sqrt((inv(nombre))))[1,1]
+
+```
+
+## 4. Estimer un modèle plus simple ne comprenant que les facteurs influents. Comparer l'estimation des coefficients avec le modèle précédent
+
+```{r} 
+silicium_adj = lm(Camber ~ Ltemp + Lpress + Ctime + Catmos, data = silicium)
+summary(silicium_adj)
+```
+
+Les quatre coefficients obtenus avec ce modèle sont strictement similaires aux
+quatre coefficients associées aux mêmes variables explicatives (identifiés en
+jaune précédemment) dans le modèle précédent qui prenait en compte les six
+variables explicatives. De ce fait, en supprimant deux variables
+explicatives, aucun potentiel effet d'interaction n'a été perdu. Ceci
+valide la suppression des deux variables Ltime et Ctemp.
+
+## 5. 
+
+### 5.1. Quelles sont les conditions expérimentales qui permettent de minimiser la courbure Camber ?
+
+Pour minimiser la courbure de la plaque de silicium dans notre modèle, on veut
+d'une part maximiser l'influence des facteurs à influence négative sur la
+courbure, et d'autre part minimiser l'influence des facteurs à influence positive
+sur la courbure. Ainsi, on va se placer en 1 pour Ctime et Catmos et en -1 pour
+Ltemp et Lpress. Autrement dit, les conditions expérimentales pour
+minimiser la courbure sont : Ctime 29 secondes ; Catmos 26°C ;
+Ltemp 55 °C et Lpress 5bars. 
+
+### 5.2. Donner un intervalle de confiance pour la courbure moyenne en ce point de fonctionnement optimal
+
+On cherche maintenant un intervalle de confiance pour la courbure moyenne en
+ce point de fonctionnement optimal.
+
+```{r} 
+frame = data.frame(Ltemp = -1, Lpress = -1, Ctime = 1, Catmos = 1)
+base_prediction = data.frame(predict(silicium_adj, frame, interval="confidence", level=0.95))
+upper_limit = 25 + 2*38.53/sqrt(64)
+```
+
+Avec les conditions initiales évoquées précédemment, R situe Camber entre la
+lower value de -17,97 et la upper value de 25,12. En valeur absolue (cambrure
+toujours positive) et en arrondissant on obtient un intervalle [0 ; 25,2]. 
+
+On souhaite que cet intervalle soit un intervalle de confiance à 95 %. 
+Connaissant la forme [x̅− 2σ(X)/√nn ; x̅+2σ(X)/√nn] de l'intervalle,et l'erreur
+standard dans notre modèle qui vaut 38,53, notre intervalle de confiance à
+95 % sera : Camber Є [0 ; 102,06]
+
+On étudie enfin l'influence dans notre modèle d'une augmentation de 5°C de la
+température de laminage de la plaque (soit +0,5 en valeurs normalisées par
+rapport à l'intervalle [55°C;75°C] ).
+
+### 5.3. Quel est l'impact sur la courbure d'une augmentation de 5 degrés C de la température de laminage ?
+
+On étudie enfin l'influence dans notre modèle d'une augmentation de 5°C de la
+température de laminage de la plaque (soit +0,5 en valeurs normalisées par
+rapport à l'intervalle [55°C;75°C] ). 
+
+```{r} 
+frame_augment = data.frame(Ltemp = -0.5, Lpress = -1, Ctime = 1, Catmos = 1)
+adj_prediction = data.frame(predict(silicium_adj, frame_augment, interval="confidence", level=0.95))
+dif = adj_prediction$fit - base_prediction$fit
+```
+
+Précédemment on avait en les points minimum une courbure attendue de 3,57.
+Ici, après une augmentation de 5°C on obtient une courbure de 13,30. Ainsi,
+une telle augmentation de la température de laminage aboutit à une
+augmentation de 9,73 de la courbure. 
+
+### 6. Les hypothèses du modèle sont-elles vérifiées ? expliquer
+
+L'hypothèse d'une dépendance uniquement linéaire en les quatre variables
+explicatives Ltemp, Lpress, Ctime et Catmos n'est pas parfaitement vérifiée. En
+effet, le modèle de régression obtenu a un coefficient de régression R2=0,6839
+assez faible. 
+
+De plus, on plot la régression linéaire comme montré en haut de page suivante.
+Les résidus ne sont pas uniformément répartis, ce qui confirme l'existence de
+dépendances qui restent à expliquer.
+
+```{r} 
+plot(silicium_adj)
+```
+
+# Exercice 01 -  Régression logistique
 
 ```{r}
-
+neuralgia = read.table(file = "./02. Segundo BE/01. Treinamento/neuralgia.txt", 
+                              header = TRUE)
+head(neuralgia)
+p = length(neuralgia) - 1
+n = nrow(neuralgia)
+x = as.matrix(neuralgia[,-7])
 ```
-
