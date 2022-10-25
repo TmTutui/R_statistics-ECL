@@ -170,7 +170,127 @@ unique(neuralgia$Treatment)
 unique(neuralgia$Sex)
 ```
 
-## 1. Partager le fichier en un fichier d'apprentissage (80%) et un fichier de test (20%)
+## 2. Partager le fichier en un fichier d'apprentissage (80%) et un fichier de test (20%)
 
+```{r}
+n = nrow(neuralgia)
+p = n * 0.8
+u = sample(1:n,p)
+donnes_apprentissage = neuralgia[u,]
+donnes_test = neuralgia[-u,]
+nrow(donnes_apprentissage)
+nrow(donnes_test)
+```
 
+## 3. Réaliser sur le fichier d'apprentissage une régression logistique pour prédire la variable Pain
+
+L'évènement modélisé ici est l'évènement « il y a Pain ». Soit π(x) la probabilité de l’évènement que 
+l'on cherche à modéliser. Alors le modèle logit consiste à écrire que :
+
+Où sont les paramètres à estimer. La fonction Logit est la fonction définie par :
+
+```{r}
+donnes_apprentissage$Treatment = as.factor(donnes_apprentissage$Treatment)
+donnes_apprentissage$Sex = as.factor(donnes_apprentissage$Sex)
+logistic_model = glm(Pain ~ Treatment + Sex + Age + Duration, family=binomial(link="logit"), data=donnes_apprentissage)
+```
+
+## 4. Analyser le résultat des commandes Anova
+
+```{r}
+anova(logistic_model,test="Chisq") # test du Chi carré
+anova(logistic_model,test.statistic = "LR", type= 'III') # test de maximum de vraisemblance
+anova(logistic_model,test.statistic = "Wald", type= 'III') # test de Wald-Wolfowitz
+```
+
+Avec le test du Chi carré, la durée du traitement n'a aucune influence sur la
+douleur du patient. Le traitement employé, le sexe et l'âge du patient ont eux
+une influence. 
+
+Dans le test de maximum de vraisemblance, la durée du traitement n'a toujours pas d'influence 
+et le traitement 
+employé, l'âge et le sexe du patient ont une influence. Notons néanmoins que
+l'influence estimée de ces trois variables explicatives est différente du test
+précédent. Ici, le type de traitement appliqué a une plus forte influence ainsi
+que l'âge, le sexe ayant une influence du même ordre de grandeur. 
+
+Pour le Wald-Wolfwitz, la même conclusion sur la non influence de la durée du traitement. 
+De la même manière, les influences estimées du type de traitement, de l'âge et du
+sexe du patient sont différentes des analyses précédentes.
+
+```{r}
+summary(glm(Pain ~.,family=binomial(link="logit"),data=donnes_apprentissage))
+```
+
+A la lecture de ce summary, on conclut encore une fois sur la large non-influence (en rouge) de la durée du traitement sur la douleur ressentie par le 
+patient. 
+Le sexe et l'âge du patient sont tout deux influents. Concernant le traitement, 
+on peut préciser à la lecture du summary que le traitement B n'a aucune 
+influence sur Pain alors que le traitement P en a une grande (en vert). 
+
+## 5. Réaliser maintenant une procédure forward pour le critère AIC
+
+On effectue maintenant une procédure forward pour construire le modèle
+basé sur les variables les plus significatives. Celui ci fonctionne en
+ajoutant à chaque itération une variable au modèle. La variable ajoutée sera
+celle qui minimisera le critère AIC. On arrête les itérations quand toutes les
+variables auront été ajoutées ou bien quand toutes les variables restantes à
+ajouter dépassent un certain seuil (5%) du critère.
+Dans notre cas, on obtient les itérations et le résultat (en vert) affichés ci
+dessous :
+
+```{r}
+logistic_model_2=glm(Pain ~ 1,family=binomial,data=donnes_apprentissage)
+next_step <- step(logistic_model_2, direction="forward", scope=list(upper=~(Treatment + Sex + Age + Duration)), trace = TRUE)
+next_step$anova
+anova(forward,test.statistic="LR",type = 'III')
+```
+
+Le modèle obtenu par cette procédure confirme les analyses faites
+précédemment. Il sélectionne les variables explicatives Traitement, Age et Sex
+avec Traitement qui a la plus grande influence car sélectionné en premier.
+
+## 6. A l'aide du fichier test, comparer les matrices de confusions pour les deux modèles
+
+```{r}
+logistic_model_reduit = glm(Pain ~ Treatment + Sex + Age, family=binomial(link="logit"), data=donnes_apprentissage)
+predict = exp(predict(logistic_model, newdata = donnes_test))/(1+exp(predict(logistic_model, newdata=donnes_test)))
+predict_reduit = exp(predict(logistic_model_reduit, newdata =donnes_test))/(1+exp(predict(logistic_model_reduit, newdata =donnes_test)))
+table(predict > 0.5, donnes_test$Pain)
+table(predict_reduit > 0.5, donnes_test$Pain)
+```
+
+Même résultat !!
+
+## 7. On se fixe un modèle. Etudier la sensibilité des qualités prédictives à l'échantillon 
+
+```{r}
+calculer_diff_vector <- function(n,p,neuralgia){
+
+  diff = vector("numeric",50)
+
+  for (i in 1:50) {
+    u = sample(1:n,p)
+    donnes_apprentissage = neuralgia[u,]
+    donnes_test = neuralgia[-u,]
+    donnes_apprentissage$Treatment = as.factor(donnes_apprentissage$Treatment)
+    donnes_apprentissage$Sex = as.factor(donnes_apprentissage$Sex)
+    logistic_model = glm(Pain ~ Treatment + Sex + Age + Duration, family=binomial(link="logit"), data=donnes_apprentissage)
+    predict = exp(predict(logistic_model, newdata = donnes_test))/(1+exp(predict(logistic_model, newdata=donnes_test)))
+    results = table(predict > 0.5, donnes_test$Pain)
+    diff[i] = (results[1,1]+results[2,2])/12
+  }
+
+  return (diff)
+
+}
+
+base_case = calculer_diff_vector(n,n * 0.8,neuralgia)
+alt_case_1 = calculer_diff_vector(n,n * 0.9,neuralgia)
+alt_case_2 = calculer_diff_vector(n,n * 0.7,neuralgia)
+alt_case_3 = calculer_diff_vector(n,n * 0.6,neuralgia)
+
+aver = c(mean(base_case), mean(alt_case_1), mean(alt_case_2), mean(alt_case_3))
+plot(aver, ylim=0:1)
+```
 
