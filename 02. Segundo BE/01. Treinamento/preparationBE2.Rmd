@@ -37,13 +37,13 @@ peuvent être estimés sans confusion. Cependant, ce n'est pas le cas
 des effets des interactions doubles.
 
 ```{r}
-silicium = read.table(file = "./02. Segundo BE/01. Treinamento/silicium.txt", 
+silicium = read.table(file = "silicium.txt",  # ./02. Segundo BE/01. Treinamento/silicium.txt
                               header = TRUE)
 head(silicium)
 p = length(silicium) - 1
 n = nrow(silicium)
 x = as.matrix(silicium[,-7])
-nombre = t(x)%*%x
+nombre = t(x) %*% x
 ```
 
 ## 2. Ajuster un modèle linéaire de la variable Camber en fonction des 6 facteurs. Analyser la sortie summary du modèle
@@ -106,24 +106,24 @@ base_prediction = data.frame(predict(silicium_adj, frame, interval="confidence",
 upper_limit = 25 + 2*38.53/sqrt(64)
 ```
 
-Avec les conditions initiales évoquées précédemment, R situe Camber entre la
+<!-- Avec les conditions initiales évoquées précédemment, R situe Camber entre la
 lower value de -17,97 et la upper value de 25,12. En valeur absolue (cambrure
 toujours positive) et en arrondissant on obtient un intervalle [0 ; 25,2]. 
 
 On souhaite que cet intervalle soit un intervalle de confiance à 95 %. 
-Connaissant la forme [x̅− 2σ(X)/√nn ; x̅+2σ(X)/√nn] de l'intervalle,et l'erreur
+Connaissant la forme [x̅- 2σ(X)/√nn ; x̅+2σ(X)/√nn] de l'intervalle,et l'erreur
 standard dans notre modèle qui vaut 38,53, notre intervalle de confiance à
 95 % sera : Camber Є [0 ; 102,06]
 
 On étudie enfin l'influence dans notre modèle d'une augmentation de 5°C de la
 température de laminage de la plaque (soit +0,5 en valeurs normalisées par
-rapport à l'intervalle [55°C;75°C] ).
+rapport à l'intervalle [55C;75C] ). -->
 
 ### 5.3. Quel est l'impact sur la courbure d'une augmentation de 5 degrés C de la température de laminage ?
 
 On étudie enfin l'influence dans notre modèle d'une augmentation de 5°C de la
 température de laminage de la plaque (soit +0,5 en valeurs normalisées par
-rapport à l'intervalle [55°C;75°C] ). 
+rapport à l'intervalle [55C;75C] ). 
 
 ```{r} 
 frame_augment = data.frame(Ltemp = -0.5, Lpress = -1, Ctime = 1, Catmos = 1)
@@ -163,7 +163,7 @@ est Pain et représente la souffrance du patient : 0 s'il ne souffre pas et 1 s'
 souffre. On visualise les premières lignes de ce fichier importé dans R ci-dessous
 
 ```{r}
-neuralgia = read.table(file = "./02. Segundo BE/01. Treinamento/neuralgia.txt", 
+neuralgia = read.table(file = "neuralgia.txt",  # ./02. Segundo BE/01. Treinamento/neuralgia.txt
                               header = TRUE)
 head(neuralgia)
 unique(neuralgia$Treatment)
@@ -184,7 +184,7 @@ nrow(donnes_test)
 
 ## 3. Réaliser sur le fichier d'apprentissage une régression logistique pour prédire la variable Pain
 
-L'évènement modélisé ici est l'évènement « il y a Pain ». Soit π(x) la probabilité de l’évènement que 
+L'évènement modélisé ici est l'évènement « il y a Pain ». Soit $\pi(x)$ la probabilité de l’évènement que 
 l'on cherche à modéliser. Alors le modèle logit consiste à écrire que :
 
 Où sont les paramètres à estimer. La fonction Logit est la fonction définie par :
@@ -243,7 +243,7 @@ dessous :
 logistic_model_2=glm(Pain ~ 1,family=binomial,data=donnes_apprentissage)
 next_step <- step(logistic_model_2, direction="forward", scope=list(upper=~(Treatment + Sex + Age + Duration)), trace = TRUE)
 next_step$anova
-anova(forward,test.statistic="LR",type = 'III')
+# anova(next_step,test.statistic="LR",type = 'III')
 ```
 
 Le modèle obtenu par cette procédure confirme les analyses faites
@@ -286,7 +286,7 @@ calculer_diff_vector <- function(n,p,neuralgia){
 }
 
 base_case = calculer_diff_vector(n,n * 0.8,neuralgia)
-alt_case_1 = calculer_diff_vector(n,n * 0.9,neuralgia)
+# alt_case_1 = calculer_diff_vector(n,n * 0.9,neuralgia)
 alt_case_2 = calculer_diff_vector(n,n * 0.7,neuralgia)
 alt_case_3 = calculer_diff_vector(n,n * 0.6,neuralgia)
 
