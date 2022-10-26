@@ -290,7 +290,9 @@ alt_case_1 = calculer_diff_vector(n,n * 0.9,neuralgia)
 alt_case_2 = calculer_diff_vector(n,n * 0.7,neuralgia)
 alt_case_3 = calculer_diff_vector(n,n * 0.6,neuralgia)
 
-aver = c(mean(base_case), mean(alt_case_1), mean(alt_case_2), mean(alt_case_3))
-plot(aver, ylim=0:1)
+# aver = c(mean(base_case), mean(alt_case_1), mean(alt_case_2), mean(alt_case_3))
+errors = c(mean(base_case), mean(alt_case_2), mean(alt_case_3))
+proportion = c(0.8, 0.7, 0.6)
+plot(proportion,errors)
 ```
 
