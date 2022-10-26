@@ -18,3 +18,182 @@ output:
 knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 6)
 ```
 
+# Exercice 01 - Régression logistique
+
+## 1. On considère le modèle de régression logistique en l'absence de covariables
+
+```{r}
+# tuyns = read.table(file = "./02. Segundo BE/02. Aula/tuyns.txt",header = TRUE) 
+tuyns = read.table(file = "tuyns.txt",header = TRUE) 
+head(tuyns)
+```
+
+À la base de données, on verifie que les lignes correspondent à patients et 
+la variable d'interêt "cancer". Elle possède 200 valeurs "1" qu'on interprete 
+comme des personnes que n'ont pas de cancer et
+315 valeurs "0" qu'on interprete comme des personnes qu'ont cancer.
+
+### 1.1. À quoi correspond le coefficient $\alpha$ ?
+
+La fonction Logit est la fonction définie par : $p \rightarrow log(p/1-p)$ = $\alpha$. 
+Où $p$ est la probabilité de success du modèle. 
+
+
+### 1.2. Comment s'interprète-t-il ?
+
+```{r}
+logistic_model = glm(cancer ~ 1, family=binomial(link="logit"), data=tuyns)
+summary(logistic_model)
+
+predict = exp(predict(logistic_model, newdata = tuyns))/(1+exp(predict(logistic_model, newdata=tuyns)))
+results = table(predict > 0.5, tuyns$cancer)
+results
+
+exp(logistic_model$coefficients[1])/(1+exp(logistic_model$coefficients[1]))
+```
+
+Si on construit une modèle en l'absence de covariables, on fait un modèle 
+0R, cet-à-dire la prévision sera qu'une personne n'a pas de cancer, car la 
+majorité de l'échantillon n'a pas de cancer.
+
+## 2. Etudier l'effet de la variable TAB sur la survenue du cancer.
+
+### 2.1 Donner l'équation du modèle et interpréter l'intercept dans ce cas.
+
+Dans ce cas, l'équation du modèle est donné par:
+
+$\pi = \frac{e^{\beta_0 + x\beta_1}}{1+e^{\beta_0 + x\beta_1}}$
+
+### 2.2 Mettre en oeuvre le modèle sur R.
+
+```{r}
+tuyns$TAB = as.factor(tuyns$TAB)
+logistic_model_1 = glm(cancer ~ TAB, family=binomial(link="logit"), data=tuyns)
+```
+
+### 2.3 Interpréter le résultat de la routine Anova.
+
+```{r}
+library(car)
+anova(logistic_model_1,test="Chisq") # test du Chi carré
+Anova(logistic_model_1,test.statistic = "LR", type= 'III') # test de maximum de vraisemblance
+Anova(logistic_model_1,test.statistic = "Wald", type= 'III') # test de Wald-Wolfowitz
+```
+
+On peut observer que en utilisant n'importe quel des méthodes au-dessus (Chi-carré,
+maximum de vraisemblance ou Wald-Wolfowitz), la variable TAB possède une significance au modèle.
+
+### 2.4 Interpréter le résultat du summary, on regardera si tous les niveaux d'exposition ont une influence significative.
+
+```{r}
+summary(logistic_model_1)
+```
+
+On verifie que tous les categories de TAB sont relevant pour le modèle, en 
+prenant en compte $\alpha = 5%$.
+
+
+# 3. Recommencer les étapes précédentes en étudiant l'effet de la variable ALC sur la survenue du cancer. Quelle est la variable la plus influente ALC ou TAB ?
+
+```{r}
+tuyns$ALC = as.factor(tuyns$ALC)
+logistic_model_2 = glm(cancer ~ ALC, family=binomial(link="logit"), data=tuyns)
+```
+
+### 2.3 Interpréter le résultat de la routine Anova.
+
+```{r}
+library(car)
+anova(logistic_model_2,test="Chisq") # test du Chi carré
+Anova(logistic_model_2,test.statistic = "LR", type= 'III') # test de maximum de vraisemblance
+Anova(logistic_model_2,test.statistic = "Wald", type= 'III') # test de Wald-Wolfowitz
+```
+
+On peut observer que en utilisant n'importe quel des méthodes au-dessus (Chi-carré,
+maximum de vraisemblance ou Wald-Wolfowitz), la variable ALT possède une significance au modèle.
+
+### 2.4 Interpréter le résultat du summary, on regardera si tous les niveaux d'exposition ont une influence significative.
+
+```{r}
+summary(logistic_model_2)
+```
+
+On verifie que tous les categories de ALC sont relevant pour le modèle, en 
+prenant en compte $\alpha = 5%$, surtout ALC4 qui a une relaction plus important que
+les autres categories.
+
+# 4. Proposer un modèle complet avec interaction. Interpréter les résultats de ce modèle. Simplifier éventuellement le modèle et calculer l'Odds pour une population ALC = 1 TAB = 2. Donner la matrice de confusion de ce modèle
+
+On propose une procédure AIC forward pour construire an ajoutant une paramètre à la fois.
+Celle qui est ajoutée est celle qui minimisera le critère AIC.
+
+```{r}
+next_step <- step(logistic_model, direction="forward", scope=list(upper=~(TAB + ALC)), trace = TRUE)
+next_step$anova
+Anova(next_step,test.statistic="LR",type = 'III')
+```
+
+Cette procédure confirme ce qu'on a observé dans les exercices précedents, car les deux variables
+diminuent le critère AIC et sont donc interessantes d'êtres ajoutéesau modèle. 
+
+```{r}
+predict = exp(predict(next_step, newdata = tuyns))/(1+exp(predict(next_step, newdata=tuyns)))
+table(predict > 0.5, tuyns$cancer)
+```
+
+# Exercice 02 - Plan d'expériences - Surface de réponse
+
+```{r}
+hormones = read.table(file = "hormones.txt", header = T, dec = ",") 
+# hormones = read.table(file = "hormones.txt", header = T, dec = ",") 
+head(hormones)
+```
+
+## 1. Représenter graphiquement le plan d'expériences en 2D. Il s'agit d'un plan composé des 4 sommets du carré, de 4 points sur les axes et du centre du domaine. On appelle ce plan un plan composite. Il permet d’estimer un modèle comprenant les facteurs principaux, les termes d’interactions et les termes carrés. Executer les commandes suivantes pour revenir aux variables adimentionnées.
+
+```{r}
+hormones$X1 = (hormones$X1- 85)/ 35
+hormones$X2 = (hormones$X2- 20)/ 5
+
+# plot(c(0, hormones$X1), c(hormones$X2, 0), col='blue')
+plot(expand.grid(hormones$X1, hormones$X2))
+```
+
+## 2. Faire l'analyse sur le premier groupe d'enfant.
+
+```{r}
+# hormones = read.table(file = "./02. Segundo BE/02. Aula/hormones.txt", header = T, dec = ",") 
+mod1 = lm(Y1 ~ X1 + X2 + X1:X2 + I(X1^2) + I(X2^2), data = hormones)
+summary(mod1)
+```
+
+On observe que les hormones isolés possèdent des p-values qui satisfaissent un $\alpha = 5%$.
+Par contre, le modèle complét en considérant leur intéraction ne satisfait pas cette hypothèse.
+
+## 4. Quel gain de taille peut on attendre avec le traitement suivant : X1 = 100 ppm et X2 = 20 ppm ? Donner un intervalle de prédiction.
+
+```{r}
+mod2 = lm(Y1 ~ X1 + X2, data = hormones)
+new_data = data.frame(X1 = 100, X2 = 20)
+
+predict = predict(mod1, newdata = new_data, interval="prediction", level=0.95)
+predict
+```
+
+
+## bonus1. Les conclusions sont elles similaires sur le deuxième groupe d'enfants ?
+
+```{r}
+# hormones = read.table(file = "./02. Segundo BE/02. Aula/hormones.txt", header = T, dec = ",") 
+mod3 = lm(Y2 ~ X1 + X2 + X1:X2 + I(X1^2) + I(X2^2), data = hormones)
+summary(mod3)
+```
+
+Pour ce groupe des enfants, on observe un résultat différent. 
+L'hormone X2 ne possèdent pas un p-valeur qui satisfait un $\alpha = 5%$.
+Par contre, le modèle en considérant leur intéraction satisfait cette hypothèse, en arrivant 
+à une valeur encore moins important de p-valeur qui celle de X1.  
+
+## bonus2. Y a-t-il un effet groupe ?
+
+D'après les résultats, on peut constater qu'il y a un effet groupe
