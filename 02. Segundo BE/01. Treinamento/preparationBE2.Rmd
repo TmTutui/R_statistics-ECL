@@ -28,7 +28,7 @@ Donc on a 16 experiences differénts.
 fractionnaire, avec $n = 2^{6-2} = 2^{4} = 16$.
 
 En étudiant les 16 premières lignes, on note que : (A.B.C = E) et (A.C.D = F).
-Autrement dit, Ctemp est une interaction triple de Ltemp, Ltime et Lpress , et
+Autrement dit, Ctime est une interaction triple de Ltemp, Ltime et Lpress , et
 Catmos est une interaction triple de Ltemp, Lpress, Ctemp. De ce fait, les effets
 principaux se confondent tous avec des interactions triples. Or, comme dans le
 cours, on fait l'hypothèse que les interactions triples sont d'influence
@@ -44,15 +44,14 @@ p = length(silicium) - 1
 n = nrow(silicium)
 x = as.matrix(silicium[,-7])
 nombre = t(x) %*% x
+
+p
+n
+x
+nombre
 ```
 
 ## 2. Ajuster un modèle linéaire de la variable Camber en fonction des 6 facteurs. Analyser la sortie summary du modèle
-
-## 3. Retrouver par le calcul le chiffre de la colonne Std Error
-
-En analysant le summary du modèle, on observe que les paramètres 
-Ltemp, Lpress, Ctime et Catoms sont des paramètres explicatifs du modèle. Par contre,
-Ltime et Ctemp n'en sont pas. 
 
 ```{r} 
 mod1 = lm(Camber~., data = silicium)
@@ -61,12 +60,21 @@ anova(mod1)
 
 ```
 
-Du summury, on obtient que $\sigma = 38.34$. Donc
+- $R^2$ est trop petite
+- Ltime et Ctemp sont pas important pour le modele
+
+## 3. Retrouver par le calcul le chiffre de la colonne Std Error
+
+En analysant le summary du modèle, on observe que les paramètres 
+Ltemp, Lpress, Ctime et Catoms sont des paramètres explicatifs du modèle. Par contre,
+Ltime et Ctemp n'en sont pas. 
+
+Du summary, on obtient que $\sigma = 38.34$. Donc
 
 ```{r} 
 library(matlib)
 std_error = (38.34*sqrt((inv(nombre))))[1,1]
-
+std_error
 ```
 
 ## 4. Estimer un modèle plus simple ne comprenant que les facteurs influents. Comparer l'estimation des coefficients avec le modèle précédent
@@ -103,7 +111,9 @@ ce point de fonctionnement optimal.
 ```{r} 
 frame = data.frame(Ltemp = -1, Lpress = -1, Ctime = 1, Catmos = 1)
 base_prediction = data.frame(predict(silicium_adj, frame, interval="confidence", level=0.95))
+base_prediction
 upper_limit = 25 + 2*38.53/sqrt(64)
+upper_limit
 ```
 
 <!-- Avec les conditions initiales évoquées précédemment, R situe Camber entre la
@@ -129,6 +139,7 @@ rapport à l'intervalle [55C;75C] ).
 frame_augment = data.frame(Ltemp = -0.5, Lpress = -1, Ctime = 1, Catmos = 1)
 adj_prediction = data.frame(predict(silicium_adj, frame_augment, interval="confidence", level=0.95))
 dif = adj_prediction$fit - base_prediction$fit
+dif
 ```
 
 Précédemment on avait en les points minimum une courbure attendue de 3,57.
@@ -151,7 +162,7 @@ dépendances qui restent à expliquer.
 plot(silicium_adj)
 ```
 
-# Exercice 01 -  Régression logistique
+# Exercice 02 -  Régression logistique
 
 ## 1. Décrire les variables
 
@@ -198,9 +209,10 @@ logistic_model = glm(Pain ~ Treatment + Sex + Age + Duration, family=binomial(li
 ## 4. Analyser le résultat des commandes Anova
 
 ```{r}
+library(car)
 anova(logistic_model,test="Chisq") # test du Chi carré
-anova(logistic_model,test.statistic = "LR", type= 'III') # test de maximum de vraisemblance
-anova(logistic_model,test.statistic = "Wald", type= 'III') # test de Wald-Wolfowitz
+Anova(logistic_model,test.statistic = "LR", type= 'III') # test de maximum de vraisemblance
+Anova(logistic_model,test.statistic = "Wald", type= 'III') # test de Wald-Wolfowitz
 ```
 
 Avec le test du Chi carré, la durée du traitement n'a aucune influence sur la
@@ -243,7 +255,7 @@ dessous :
 logistic_model_2=glm(Pain ~ 1,family=binomial,data=donnes_apprentissage)
 next_step <- step(logistic_model_2, direction="forward", scope=list(upper=~(Treatment + Sex + Age + Duration)), trace = TRUE)
 next_step$anova
-# anova(next_step,test.statistic="LR",type = 'III')
+Anova(next_step,test.statistic="LR",type = 'III')
 ```
 
 Le modèle obtenu par cette procédure confirme les analyses faites
@@ -267,7 +279,7 @@ Même résultat !!
 ```{r}
 calculer_diff_vector <- function(n,p,neuralgia){
 
-  diff = vector("numeric",50)
+  correct_pred = vector("numeric",50)
 
   for (i in 1:50) {
     u = sample(1:n,p)
@@ -278,21 +290,27 @@ calculer_diff_vector <- function(n,p,neuralgia){
     logistic_model = glm(Pain ~ Treatment + Sex + Age + Duration, family=binomial(link="logit"), data=donnes_apprentissage)
     predict = exp(predict(logistic_model, newdata = donnes_test))/(1+exp(predict(logistic_model, newdata=donnes_test)))
     results = table(predict > 0.5, donnes_test$Pain)
-    diff[i] = (results[1,1]+results[2,2])/12
+    tryCatch({
+      correct_pred[i] = (results[1,1]+results[2,2])/(n-p)
+    },
+    error = function(e){
+      correct_pred[i] = (results[1,1])/(n-p)
+      print('Only 1 class was predicted')
+    })
   }
 
-  return (diff)
+  return (correct_pred)
 
 }
 
 base_case = calculer_diff_vector(n,n * 0.8,neuralgia)
-# alt_case_1 = calculer_diff_vector(n,n * 0.9,neuralgia)
+alt_case_1 = calculer_diff_vector(n,n * 0.9,neuralgia)
 alt_case_2 = calculer_diff_vector(n,n * 0.7,neuralgia)
 alt_case_3 = calculer_diff_vector(n,n * 0.6,neuralgia)
 
 # aver = c(mean(base_case), mean(alt_case_1), mean(alt_case_2), mean(alt_case_3))
-errors = c(mean(base_case), mean(alt_case_2), mean(alt_case_3))
-proportion = c(0.8, 0.7, 0.6)
-plot(proportion,errors)
+successes = c(mean(alt_case_1), mean(base_case), mean(alt_case_2), mean(alt_case_3))
+proportion = c(0.9, 0.8, 0.7, 0.6)
+plot(proportion,successes, type="b", col='blue')
 ```
 
