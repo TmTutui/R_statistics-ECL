@@ -65,13 +65,13 @@ housing.test = housing[-u,]
 
  
 ```{r}
-library(Metrics)
+library(caret)
 
 # Ajuster un modèle linéaire simple sans interactions
 mod_lm <- lm(class ~., data = housing.train)
 Y_pred_lm = predict(mod_lm,housing.test[,-p])
 RMSE_lm = RMSE(housing.test[,p],Y_pred_lm)  # root mean square error
-RMSE_lm
+RMSE_lm # 5.9
 # Ajuster un modèle linéaire avec interactions
 #a completer :
 mod_lm_inter <- 
