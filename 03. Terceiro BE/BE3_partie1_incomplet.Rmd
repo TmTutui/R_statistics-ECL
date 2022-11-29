@@ -1,14 +1,22 @@
 ---
-title: "BE3_partie1"
+title: "BE3 - partie 1"
+author: "Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES"
+course: "Statistique appliquée aux sciences de l'ingénieur"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
   pdf_document: default
 ---
 
+<!-- 
+    For reference:
+    - http://rmarkdown.rstudio.com>
+    - https://lms.fun-mooc.fr/c4x/UPSUD/42001S02/asset/RMarkdown.html
+ -->
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 
 
 On reprend le jeu de données concernant la valeur des logements des villes aux alentours de Boston. On cherche à identifier un bon modèle part régression pénalisée, CART, Boosting et Random Forest.
