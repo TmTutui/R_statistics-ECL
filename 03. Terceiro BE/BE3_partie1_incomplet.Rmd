@@ -65,7 +65,7 @@ housing.train = housing[u,]
 housing.test =  housing[-u,]
 ```
 
-
+ 
 ```{r}
 # Ajuster un modèle linéaire simple sans interactions
 mod_lm <- lm(class ~., data = housing.train)
@@ -395,5 +395,3 @@ RMSE_PLS =
 RMSE_PLS
 
 ```
-
-
