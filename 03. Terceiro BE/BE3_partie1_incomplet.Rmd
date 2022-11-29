@@ -1,0 +1,399 @@
+---
+title: "BE3_partie1"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+On reprend le jeu de données concernant la valeur des logements des villes aux alentours de Boston. On cherche à identifier un bon modèle part régression pénalisée, CART, Boosting et Random Forest.
+
+Les variables utilisées sont les suivantes:
+
+**CRIM** taux de criminalité par habitant
+
+**ZN** proportion de terrains résidentiels
+
+**INDUS** proportion de terrains industriels
+
+**CHAS** 1 si ville en bordure de la rivière Charles 0 sinon
+
+**NOX** concentration en oxydes d'azote 
+
+**RM** nombre moyen de pièces par logement
+
+**AGE** proportion de logements construit avant 1940
+
+**DIS** distance du centre de Boston
+
+**RAD** accessibilité aux autoroutes de contournement
+
+**TAX** taux de l'impôt foncier
+
+**PTRATIO** rapport élèves-enseignant par ville
+
+**LSTAT** \% de la population \`a faibles revenus
+
+**$class$** valeur du logement en 1000\$
+
+
+L'objectif de ce BE est de comparer différents modèles de machines learning : le modèle linéaire, le modèle linéaire pénalisé (Ridge et Lasso), les modèles linéaires de réduction de dimension (PCR et PLS), les modèles à base d'arbres (CART, Boosting, Bagging et Random Forest).
+
+
+# Modèles linéaires
+
+On commence par ajuster un modèle linéaire sans et avec interactions à partir de l'ensemble d'apprentissage constitué de 300 observations. Evaluer la qualité prédictive de ces deux modèles sur l’ensemble test constitué de 206 observations. On pourra utiliser la commande RMSE du package DiceEval.
+
+
+```{r}
+library(DiceEval)
+library(car)
+library(MASS)
+
+housing = read.table("housing_new.txt", header = T)
+p = ncol(housing)
+summary(housing)
+dim(housing)
+set.seed(23)
+u = sample(1:nrow(housing),300)
+housing.train = housing[u,]
+housing.test =  housing[-u,]
+```
+
+
+```{r}
+# Ajuster un modèle linéaire simple sans interactions
+mod_lm <- lm(class ~., data = housing.train)
+Y_pred_lm = predict(mod_lm,housing.test[,-p])
+RMSE_lm = RMSE(housing.test[,p],Y_pred_lm)
+RMSE_lm
+# Ajuster un modèle linéaire avec interactions
+#a completer :
+mod_lm_inter <- 
+#a completer :
+Y_pred_lm_inter = 
+#a completer :
+RMSE_lm_inter = 
+RMSE_lm_inter
+```
+
+On remarque qu'en ajoutant les termes d'interaction l'erreur a diminué. Cependant le modèle avec interaction est très complexe (157 termes) donc certainement trop variable. L'idée est de chercher un modèle plus prédictif, i.e. avec une RMSE plus faible que 4.836.
+
+# Modèles linéaires pénalisés
+
+Ajuster une régression lasso (commande lars du package lars ). Pour ce faire, il est nécessaire de créer une matrice contenant tous les termes (variables principales et les interactions).
+
+```{r}
+#--------------------------------------------------------------
+# lasso
+#--------------------------------------------------------------
+library(lars)
+y = as.matrix(housing.train[,p])
+x = as.matrix(housing.train[,-p])
+x_extend = x
+for (i in 1:(p-2))
+{
+  for (j in 2:(p-1))
+  {
+    x_extend = cbind(x_extend,x[,i]*x[,j])
+  }
+}
+mod_lasso =lars(x_extend, y, type = "lasso")
+
+```
+— Etudier la matrice des coefficients (commande coef.lars) et tracer le modèle (commande plot).
+
+```{r}
+dim(coef.lars(mod_lasso)) # 196 valeurs de lambda différentes et 133 coefficients
+# Faire un choix de ligne entre 1 (très forte pénalité) et 196 (faible pénalité)
+l = 
+sum(coef.lars(mod_lasso)[l,]==0)
+#summary(mod_lasso)
+par(mfrow =c(1,1))
+plot(mod_lasso,cex =1, lwd = 3,col = 1:(p-1))
+legend(0,0,names(housing.train[,-p]),col = 1:(p-1),lty = rep(1,p-1),lwd = rep(3,p-1),cex = 0.5)
+
+```
+
+— Faire un choix du meilleur modèle en étudiant la décroissance de l'erreur par validation croisée (commande cv.lars). Faire un choix de la meilleure fraction (directement liée à la valeur du lambda. Fraction = 1 (resp. Fraction = 0) correspond à $\lambda = 0$ (resp. $\lambda = +\infty$)).
+
+```{r}
+CV = cv.lars(x, y, K = 10, index=seq(from = 0, to = 1, length =100), 
+             trace = FALSE, plot.it = TRUE, se = TRUE,type = "lasso",mode = "fraction")
+
+#a completer :
+value =
+```
+
+-  Donner le nombre de coefficients non nuls du modèle final retenu. La pénalité a-t-elle jouer son rôle ? 
+
+```{r}
+#a completer :
+coef_lasso_beter <- predict.lars( ... )
+#a completer :
+nb_coef_nul = 
+nb_coef_nul
+```
+
+— Evaluer la qualité prédictive du modèle sur l’ensemble test (commande predict.lars ).
+
+```{r}
+newx = as.matrix(housing.test[,-p])
+for (i in 1:(p-2))
+{
+  for (j in 2:(p-1))
+  {
+    newx = cbind(newx,newx[,i]*newx[,j])
+  }
+}
+#a completer :
+fits <- predict.lars( ... )
+#a completer :
+RMSE_lasso = 
+c(RMSE_lm_inter,RMSE_lasso)
+
+```
+
+Ajuster maintenant une régression Ridge. La pénalité Ridge ne s'applique pas sur l'intercept. Il est donc nécessaire d'enlever le terme constant avant d'appliquer la procédure lm.ridge de la library MASS.
+
+```{r}
+#------------------------------------------
+#ajustement ridge 
+#------------------------------------------
+library(MASS)
+#on part d'une matrice centrée réduite
+housing.train2 =as.data.frame(scale(cbind(x_extend,housing.train[,p])))
+#on garde en mémoire moyenne et écart type des données initiales
+mean.train = apply(cbind(x_extend,y),2,mean)
+sd.train = apply(cbind(x_extend,y),2,sd)
+
+#On se donne un vecteur de poids lambda
+lambda = c(seq(0.01,10,0.01),seq(10,100,10),1000,2000)
+
+p2 = ncol(housing.train2)
+mod_ridge = lm.ridge(V134 ~.-1,data = housing.train2,lambda = lambda)
+
+
+```
+
+- Tracer les différents beta en fonction du $\lambda$. Que remarquez-vous ? 
+
+```{r}
+#tracer des différentes valeurs des beta en fonction de lambda
+beta_mat = mod_ridge$coef
+par(mfrow = c(1,1))
+plot(lambda,beta_mat[1,],ylim = c(min(beta_mat),max(beta_mat)),pch = 19, cex=0.4,ylab = "coefficients")
+lines(lambda,beta_mat[1,],lwd = 2)
+for (i in 2:(p-1))
+{
+  points(lambda,beta_mat[i, ],col = i,pch = 19, cex=0.4)
+  lines(lambda,beta_mat[i, ],col = i,lwd = 2)
+  
+}
+legend(1000,2.5,row.names(beta_mat),col = 1:p,lty = rep(1,p),cex=0.5,pch =  rep(19,8))
+```
+
+Le choix du meilleur $\lambda$ se fait par validation croisée. 
+
+```{r}
+# tracer du GCV en fonction du lambda 
+plot(lambda, mod_ridge$GCV,pch = 19, col = 6,xlab = 'lambda', ylab = "GCV")
+plot(lambda[1:40], mod_ridge$GCV[1:40],pch = 19, col = 6,xlab = 'lambda', ylab = "GCV")
+
+# choix du meilleur beta. On récupère la position (indice) où le GCV est minimum
+indice = 
+beta = beta_mat[,indice]
+```
+
+La remise à l'échelle est nécessaire pour la prédiction. 
+```{r}
+#prédiction du modèle et remise à l'échelle pour comparer à diab.test
+ypred =  as.matrix((x_extend-t(matrix(rep(mean.train[-p2],300),p2-1,300)))/t(matrix(rep(sd.train[-p2],300),p2-1,300)))%*%matrix(beta,p2-1,1)*sd.train[p2] + mean.train[p2]
+X_test = as.matrix(newx-t(matrix(rep(mean.train[-p2],206),p2-1,206)))
+X_test = X_test / t(matrix(rep(sd.train[-p2],206),p2-1,206))
+Y_pred_ridge = (as.matrix(X_test)%*%matrix(beta,p2-1,1))*sd.train[p2]+mean.train[p2]
+RMSE_ridge = 
+c(RMSE_lm_inter,RMSE_lasso,RMSE_ridge)
+```
+
+
+# Modèles à base d'arbres
+
+On commence par ajuster un modèle CART de la librairie Rpart. 
+
+```{r}
+#------------------------------------------
+#ajustement cart + random forest 
+#------------------------------------------
+library(rpart)
+cont = rpart.control(cp =0.0001)
+mod_tree <- rpart(class~., data=housing.train,control = cont)
+par(mfrow=c(1,1))  
+plot(mod_tree,uniform=TRUE,margin = 0.05)
+text(mod_tree,cex = 0.6)
+
+```
+- A quoi correspond le paramètre $\textit{cp}$ ? Il  contrôle la complexité de l'arbre (complexity parameter). 
+- Le choix de la valeur  0.0001 conduit-il à un arbre grossier ou détaillé ? Un $\textit{cp}$ petit entraine un arbre profond avec beaucoup de noeuds. 
+- Quelles sont les variables les plus influentes ?
+- Pourquoi n'est-il pas nécessaire ici de mettre en place un modèle avec interaction ? 
+
+- Faire un choix du meilleur $\textit{cp}$ par validation croisée (quatrième colonne de l'attribut $\textit{cptable}$ d'un objet de type $\textit{rpart}$).
+
+
+```{r}
+#Apparent : apprentissage, X relative : par validation croisée
+mod_tree$cptable
+
+#affichage uniquement cp>0.01
+#summary(mod_tree, cp=0.01)
+
+par(mfrow=c(1,1)) # one plot on one page 
+rsq.rpart(mod_tree) # visualize cross-validation results    
+
+```
+ - Elaguer l'arbre avec ce choix de $\textit{cp}$ (fonction $\textit{prune}$)
+
+```{r}
+#a completer :
+mod_tree_pruned =prune(mod_tree,cp = )
+par(mfrow=c(1,1))
+plot(mod_tree_pruned)
+text(mod_tree_pruned,use.n = TRUE, cex = 0.7)
+
+```
+
+```{r}
+#a completer :
+y_pred_tree <- predict(... )
+#a completer :
+RMSE_cart = 
+RMSE_cart
+```
+
+- Mettre en place un modèle de boosting en utilisant la routine $gbm$ de la librairie $gbm$. 
+- Combien d'arbres doit-on considérer ? 
+- Quelles sont les variables les plus influentes avec ce modèle ? 
+
+```{r}
+#modèle boosted trees
+library(gbm)
+mod_boosted <- gbm(class~.,data = housing.train,n.trees = 10000,cv.folds=10)
+par(mfrow = c(1,1))
+best.iter <- gbm.perf(mod_boosted,method="cv")
+par(mfrow = c(1,2))
+summary(mod_boosted,n.trees=1)         # based on the first tree
+summary(mod_boosted,n.trees=best.iter) # based on the estimated best number of trees
+summary(mod_boosted,n.trees=3000) # based on the estimated best number of trees
+#print(pretty.gbm.tree(mod_boosted,1))
+#print(pretty.gbm.tree(mod_boosted,mod_boosted$n.trees))
+f.predict1 <- predict(mod_boosted,housing.test[,-p],1)
+f.predict2 <- predict(mod_boosted,housing.test[,-p],3000)
+f.predict3 <- predict(mod_boosted,housing.test[,-p],best.iter)
+RMSE_b1 =  RMSE(housing.test[,p], f.predict1)
+RMSE_b2 =  RMSE(housing.test[,p], f.predict2)
+RMSE_b3 =  RMSE(housing.test[,p], f.predict3)
+
+```
+
+On construit maintenant une procédure de bagging. L'idée est de moyenner des arbres CART construits sur des échantillons bootstrap  des données de départ. Un échantillon Bootstrap est un tirage avec remise de N points parmi les N points de l'échantillon initial.
+
+```{r}
+#modèle arbre bagging
+cont = rpart.control(minsplit = 2,cp =0.0001)
+B = 2000
+Y <- matrix(0,nrow(housing.test),B)
+for (i in 1:B)
+{
+  u = sample(1:nrow(housing.train),nrow(housing.train), replace=T)
+  appren <- housing.train[u,]
+  mod_tree <- rpart(class~., data=appren, control = cont)
+  Y[,i] <- predict(mod_tree, newdata = housing.test)
+}
+#Y est de taille 206*B, 206 etant le nombre de points tests
+#a completer :
+Y_pred_bag =  
+#a completer :
+RMSE_bag = 
+RMSE_bag
+
+```
+
+Construire un modèle de Type Random Forest. 
+- quelle est la différence entre un modèle type bagging et un modèle de forets aléatoires ? 
+
+```{r}
+#modèle arbres random forest
+library(randomForest)
+mod_RF <- randomForest(class~., data=housing.train,ntree=300,sampsize = nrow(housing.train))
+summary(mod_RF)
+importance(mod_RF)
+plot(mod_RF)
+#a completer :
+Y_pred_RF <- predict( ...)
+#a completer :
+RMSE_RF = 
+```
+# Méthode de réduction de dimension par orthogonalisation
+
+On s'intéresse maintenant aux modèles PCR et PLS construits à partir de la matrice augmentée des interactions. 
+
+```{r}
+library(pls)
+#PCR
+housing.pcr <- pcr(class ~ .^2, 60, data = housing.train)
+```
+
+Faire le choix du nombre de composantes par validation croisée en utilisant la routine crossval.
+
+```{r}
+#a completer :
+housing.cv <- 
+plot(MSEP(housing.cv))
+```
+
+Faire la prédiction du modèle pour le nombre de composantes sélectionnées.
+
+```{r}
+#a completer :
+nbcomp = 
+Y_PCR = predict(housing.pcr, newdata = housing.test, ncomp = nbcomp, type = "response")
+#a completer :
+RMSE_PCR = 
+RMSE_PCR
+```
+Tracer les premières fonctions propres et interpréter.
+```{r}
+housing.pcr <- pcr(class ~ .^2, nbcomp, data = housing.train)
+#coef(housing.pcr)
+
+#tracer des premières fonctions propres 
+par(mfrow =c(1,1))
+plot(1:(p-1),housing.pcr$loadings[1:(p-1),1],type ="l",col = 1,ylim =c(-0.01,0.01))
+points(1:(p-1),housing.pcr$loadings[1:(p-1),1],col = 1)
+for (i in 2:4) 
+{
+  points(1:(p-1),housing.pcr$loadings[1:(p-1),i],col = i)
+  lines(1:(p-1),housing.pcr$loadings[1:(p-1),i],col = i)
+}
+```
+
+```{r}
+#PLS
+housing.pls <- plsr(class ~ .^2, 60, data = housing.train)
+housing.pls.cv <- crossval(housing.pls,segments =10)
+plot(MSEP(housing.pls.cv))
+#a completer :
+Y_PLS = 
+#a completer :
+RMSE_PLS = 
+RMSE_PLS
+
+```
+
+
