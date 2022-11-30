@@ -244,23 +244,26 @@ Le choix du meilleur $\lambda$ se fait par validation croisée.
 
 ```{r}
 # tracer du GCV en fonction du lambda 
-plot(lambda, mod_ridge$GCV,pch = 19, col = 6,xlab = 'lambda', ylab = "GCV")
-plot(lambda[1:40], mod_ridge$GCV[1:40],pch = 19, col = 6,xlab = 'lambda', ylab = "GCV")
+plot(lambda, mod_ridge$GCV, pch = 19, col = 6, xlab = "lambda", ylab = "GCV")
+
+plot(lambda[1:40], mod_ridge$GCV[1:40], pch = 19, col = 6, xlab = 'lambda', ylab = "GCV")
 
 # choix du meilleur beta. On récupère la position (indice) où le GCV est minimum
-indice = 
-beta = beta_mat[,indice]
+indice = 10  # 0.1 : command which.min()
+beta = beta_mat[, indice]
 ```
 
 La remise à l'échelle est nécessaire pour la prédiction. 
 ```{r}
 #prédiction du modèle et remise à l'échelle pour comparer à diab.test
 ypred =  as.matrix((x_extend-t(matrix(rep(mean.train[-p2],300),p2-1,300)))/t(matrix(rep(sd.train[-p2],300),p2-1,300)))%*%matrix(beta,p2-1,1)*sd.train[p2] + mean.train[p2]
-X_test = as.matrix(newx-t(matrix(rep(mean.train[-p2],206),p2-1,206)))
-X_test = X_test / t(matrix(rep(sd.train[-p2],206),p2-1,206))
+
+X_test = as.matrix(newx - t(matrix(rep(mean.train[-p2], 206), p2-1, 206)))
+X_test = X_test / t(matrix(rep(sd.train[-p2], 206), p2-1, 206))
 Y_pred_ridge = (as.matrix(X_test)%*%matrix(beta,p2-1,1))*sd.train[p2]+mean.train[p2]
-RMSE_ridge = 
-c(RMSE_lm_inter,RMSE_lasso,RMSE_ridge)
+
+RMSE_ridge = RMSE(housing.test[, p], Y_pred_ridge)
+c(RMSE_lm_inter, RMSE_lasso, RMSE_ridge)
 ```
 
 
@@ -270,98 +273,105 @@ On commence par ajuster un modèle CART de la librairie Rpart.
 
 ```{r}
 #------------------------------------------
-#ajustement cart + random forest 
+#ajustement cart + random forest
 #------------------------------------------
 library(rpart)
-cont = rpart.control(cp =0.0001)
-mod_tree <- rpart(class~., data=housing.train,control = cont)
-par(mfrow=c(1,1))  
-plot(mod_tree,uniform=TRUE,margin = 0.05)
-text(mod_tree,cex = 0.6)
+cont = rpart.control(cp = 0.0001)  # define minimum cp
+mod_tree <- rpart(class ~., data = housing.train, control = cont)
+par(mfrow = c(1, 1))
+plot(mod_tree, uniform = TRUE, margin = 0.05)
+text(mod_tree, cex = 0.6)
 
 ```
 - A quoi correspond le paramètre $\textit{cp}$ ? Il  contrôle la complexité de l'arbre (complexity parameter). 
 - Le choix de la valeur  0.0001 conduit-il à un arbre grossier ou détaillé ? Un $\textit{cp}$ petit entraine un arbre profond avec beaucoup de noeuds. 
-- Quelles sont les variables les plus influentes ?
-- Pourquoi n'est-il pas nécessaire ici de mettre en place un modèle avec interaction ? 
+- Quelles sont les variables les plus influentes ? RM et LSTAT (look both the height and frequency)
+- Pourquoi n'est-il pas nécessaire ici de mettre en place un modèle avec interaction ? Trees already consider the interactions effects
+
 
 - Faire un choix du meilleur $\textit{cp}$ par validation croisée (quatrième colonne de l'attribut $\textit{cptable}$ d'un objet de type $\textit{rpart}$).
 
-
 ```{r}
 #Apparent : apprentissage, X relative : par validation croisée
-mod_tree$cptable
+mod_tree$cptable # ele testa cps maiores (árvores mais simples), antes de chegar em cp=0.0001
 
 #affichage uniquement cp>0.01
 #summary(mod_tree, cp=0.01)
 
-par(mfrow=c(1,1)) # one plot on one page 
-rsq.rpart(mod_tree) # visualize cross-validation results    
+par(mfrow = c(1, 1)) # one plot on one page
+rsq.rpart(mod_tree) # visualize cross-validation results
+# the best result is given by nsplit = 11
+mod_tree$cptable[12, 1]
 
 ```
  - Elaguer l'arbre avec ce choix de $\textit{cp}$ (fonction $\textit{prune}$)
 
 ```{r}
 #a completer :
-mod_tree_pruned =prune(mod_tree,cp = )
-par(mfrow=c(1,1))
+mod_tree_pruned = prune(mod_tree, cp = 0.002708374)
+par(mfrow = c(1, 1))
 plot(mod_tree_pruned)
-text(mod_tree_pruned,use.n = TRUE, cex = 0.7)
+text(mod_tree_pruned, use.n = TRUE, cex = 0.7)
 
 ```
 
 ```{r}
 #a completer :
-y_pred_tree <- predict(... )
+y_pred_tree <- predict(mod_tree_pruned, housing.test[, -p])
 #a completer :
-RMSE_cart = 
+RMSE_cart = RMSE(housing.test[, p], y_pred_tree)
 RMSE_cart
 ```
 
 - Mettre en place un modèle de boosting en utilisant la routine $gbm$ de la librairie $gbm$. 
-- Combien d'arbres doit-on considérer ? 
-- Quelles sont les variables les plus influentes avec ce modèle ? 
+- Combien d'arbres doit-on considérer ? 726
+- Quelles sont les variables les plus influentes avec ce modèle ? RM et LSTAT
 
 ```{r}
 #modèle boosted trees
 library(gbm)
-mod_boosted <- gbm(class~.,data = housing.train,n.trees = 10000,cv.folds=10)
-par(mfrow = c(1,1))
-best.iter <- gbm.perf(mod_boosted,method="cv")
-par(mfrow = c(1,2))
-summary(mod_boosted,n.trees=1)         # based on the first tree
-summary(mod_boosted,n.trees=best.iter) # based on the estimated best number of trees
-summary(mod_boosted,n.trees=3000) # based on the estimated best number of trees
+mod_boosted <- gbm(class ~., data = housing.train, n.trees = 10000, cv.folds = 10)
+par(mfrow = c(1, 1))
+best.iter <- gbm.perf(mod_boosted, method = "cv")
+par(mfrow = c(1, 2))
+summary(mod_boosted, n.trees = 1)          # based on the first tree
+summary(mod_boosted, n.trees = best.iter)  # based on the estimated best number of trees
+summary(mod_boosted, n.trees = 3000)       # based on something
 #print(pretty.gbm.tree(mod_boosted,1))
 #print(pretty.gbm.tree(mod_boosted,mod_boosted$n.trees))
-f.predict1 <- predict(mod_boosted,housing.test[,-p],1)
-f.predict2 <- predict(mod_boosted,housing.test[,-p],3000)
-f.predict3 <- predict(mod_boosted,housing.test[,-p],best.iter)
-RMSE_b1 =  RMSE(housing.test[,p], f.predict1)
-RMSE_b2 =  RMSE(housing.test[,p], f.predict2)
-RMSE_b3 =  RMSE(housing.test[,p], f.predict3)
+f.predict1 <- predict(mod_boosted, housing.test[, -p], 1)
+f.predict2 <- predict(mod_boosted, housing.test[, -p], 3000)
+f.predict3 <- predict(mod_boosted, housing.test[, -p], best.iter)
+RMSE_b1 =  RMSE(housing.test[, p], f.predict1)
+RMSE_b2 =  RMSE(housing.test[, p], f.predict2)
+RMSE_b3 =  RMSE(housing.test[, p], f.predict3)
+c(RMSE_b1, RMSE_b2, RMSE_b3)
 
 ```
 
-On construit maintenant une procédure de bagging. L'idée est de moyenner des arbres CART construits sur des échantillons bootstrap  des données de départ. Un échantillon Bootstrap est un tirage avec remise de N points parmi les N points de l'échantillon initial.
+On construit maintenant une procédure de bagging. 
+L'idée est de moyenner des arbres CART construits sur des échantillons bootstrap des données de départ.
+Un échantillon Bootstrap est un tirage avec remise de N points parmi les N 
+points de l'échantillon initial.
 
 ```{r}
 #modèle arbre bagging
-cont = rpart.control(minsplit = 2,cp =0.0001)
+cont = rpart.control(minsplit = 2, cp = 0.0001)
 B = 2000
-Y <- matrix(0,nrow(housing.test),B)
-for (i in 1:B)
-{
-  u = sample(1:nrow(housing.train),nrow(housing.train), replace=T)
-  appren <- housing.train[u,]
-  mod_tree <- rpart(class~., data=appren, control = cont)
-  Y[,i] <- predict(mod_tree, newdata = housing.test)
+Y <- matrix(0, nrow(housing.test), B)
+
+for (i in 1:B) {
+  u = sample(1:nrow(housing.train), nrow(housing.train), replace = TRUE)
+  appren <- housing.train[u, ]
+  mod_tree <- rpart(class ~., data = appren, control = cont)
+  Y[, i] <- predict(mod_tree, newdata = housing.test)
 }
+
 #Y est de taille 206*B, 206 etant le nombre de points tests
 #a completer :
-Y_pred_bag =  
+Y_pred_bag = apply(Y, 1, mean)  # mean of each tree`s result
 #a completer :
-RMSE_bag = 
+RMSE_bag = RMSE(housing.test[, p], Y_pred_bag)
 RMSE_bag
 
 ```
@@ -372,10 +382,14 @@ Construire un modèle de Type Random Forest.
 ```{r}
 #modèle arbres random forest
 library(randomForest)
-mod_RF <- randomForest(class~., data=housing.train,ntree=300,sampsize = nrow(housing.train))
+mod_RF <- randomForest(class~., data = housing.train, ntree = 300, sampsize = nrow(housing.train))
+
 summary(mod_RF)
 importance(mod_RF)
 plot(mod_RF)
+
+which(mod_RF$trees == min(mod_RF$trees), arr.ind = TRUE)
+
 #a completer :
 Y_pred_RF <- predict( ...)
 #a completer :
