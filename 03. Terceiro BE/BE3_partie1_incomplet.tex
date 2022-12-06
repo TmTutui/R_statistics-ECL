@@ -1,0 +1,1174 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={BE3 - partie 1},
+  pdfauthor={Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{BE3 - partie 1}
+\author{Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES}
+\date{06 December, 2022}
+
+\begin{document}
+\maketitle
+
+On reprend le jeu de données concernant la valeur des logements des
+villes aux alentours de Boston. On cherche à identifier un bon modèle
+part régression pénalisée, CART, Boosting et Random Forest.
+
+Les variables utilisées sont les suivantes:
+
+\textbf{CRIM} taux de criminalité par habitant
+
+\textbf{ZN} proportion de terrains résidentiels
+
+\textbf{INDUS} proportion de terrains industriels
+
+\textbf{CHAS} 1 si ville en bordure de la rivière Charles 0 sinon
+
+\textbf{NOX} concentration en oxydes d'azote
+
+\textbf{RM} nombre moyen de pièces par logement
+
+\textbf{AGE} proportion de logements construit avant 1940
+
+\textbf{DIS} distance du centre de Boston
+
+\textbf{RAD} accessibilité aux autoroutes de contournement
+
+\textbf{TAX} taux de l'impôt foncier
+
+\textbf{PTRATIO} rapport élèves-enseignant par ville
+
+\textbf{LSTAT} \% de la population `a faibles revenus
+
+\textbf{\(class\)} valeur du logement en 1000\$
+
+L'objectif de ce BE est de comparer différents modèles de machines
+learning : le modèle linéaire, le modèle linéaire pénalisé (Ridge et
+Lasso), les modèles linéaires de réduction de dimension (PCR et PLS),
+les modèles à base d'arbres (CART, Boosting, Bagging et Random Forest).
+
+\hypertarget{moduxe8les-linuxe9aires}{%
+\section{Modèles linéaires}\label{moduxe8les-linuxe9aires}}
+
+On commence par ajuster un modèle linéaire sans et avec interactions à
+partir de l'ensemble d'apprentissage constitué de 300 observations.
+Evaluer la qualité prédictive de ces deux modèles sur l'ensemble test
+constitué de 206 observations. On pourra utiliser la commande RMSE du
+package DiceEval.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(DiceEval)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: DiceKriging
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(car)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: carData
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(MASS)}
+
+\NormalTok{housing }\OtherTok{=} \FunctionTok{read.table}\NormalTok{(}\StringTok{"housing\_new.txt"}\NormalTok{, }\AttributeTok{header =}\NormalTok{ T)}
+\NormalTok{p }\OtherTok{=} \FunctionTok{ncol}\NormalTok{(housing)}
+\FunctionTok{summary}\NormalTok{(housing)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       CRIM               ZN             INDUS            CHAS        
+##  Min.   : 0.0060   Min.   :  0.00   Min.   : 0.46   Min.   :0.00000  
+##  1st Qu.: 0.0820   1st Qu.:  0.00   1st Qu.: 5.19   1st Qu.:0.00000  
+##  Median : 0.2565   Median :  0.00   Median : 9.69   Median :0.00000  
+##  Mean   : 3.6135   Mean   : 11.36   Mean   :11.14   Mean   :0.06917  
+##  3rd Qu.: 3.6770   3rd Qu.: 12.50   3rd Qu.:18.10   3rd Qu.:0.00000  
+##  Max.   :88.9760   Max.   :100.00   Max.   :27.74   Max.   :1.00000  
+##       NOX               RM             AGE              DIS        
+##  Min.   :0.3850   Min.   :3.561   Min.   :  2.90   Min.   : 1.130  
+##  1st Qu.:0.4490   1st Qu.:5.886   1st Qu.: 45.02   1st Qu.: 2.100  
+##  Median :0.5380   Median :6.208   Median : 77.50   Median : 3.208  
+##  Mean   :0.5547   Mean   :6.285   Mean   : 68.57   Mean   : 3.795  
+##  3rd Qu.:0.6240   3rd Qu.:6.623   3rd Qu.: 94.08   3rd Qu.: 5.189  
+##  Max.   :0.8710   Max.   :8.780   Max.   :100.00   Max.   :12.126  
+##       RAD              TAX           PTRATIO          LSTAT      
+##  Min.   : 1.000   Min.   :187.0   Min.   :12.60   Min.   : 1.73  
+##  1st Qu.: 4.000   1st Qu.:279.0   1st Qu.:17.40   1st Qu.: 6.95  
+##  Median : 5.000   Median :330.0   Median :19.05   Median :11.36  
+##  Mean   : 9.549   Mean   :408.2   Mean   :18.46   Mean   :12.65  
+##  3rd Qu.:24.000   3rd Qu.:666.0   3rd Qu.:20.20   3rd Qu.:16.95  
+##  Max.   :24.000   Max.   :711.0   Max.   :22.00   Max.   :37.97  
+##      class      
+##  Min.   : 5.00  
+##  1st Qu.:17.02  
+##  Median :21.20  
+##  Mean   :22.53  
+##  3rd Qu.:25.00  
+##  Max.   :50.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(housing)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 506  13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{23}\NormalTok{)}
+\NormalTok{u }\OtherTok{=} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(housing), }\DecValTok{300}\NormalTok{)}
+\NormalTok{housing.train }\OtherTok{=}\NormalTok{ housing[u,]}
+\NormalTok{housing.test }\OtherTok{=}\NormalTok{ housing[}\SpecialCharTok{{-}}\NormalTok{u,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(caret)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'caret'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:DiceEval':
+## 
+##     MAE, R2, RMSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ajuster un modèle linéaire simple sans interactions}
+\NormalTok{mod\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data =}\NormalTok{ housing.train)}
+\NormalTok{Y\_pred\_lm }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod\_lm, housing.test[, }\SpecialCharTok{{-}}\NormalTok{p])}
+\NormalTok{RMSE\_lm }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_pred\_lm)  }\CommentTok{\# root mean square error}
+\NormalTok{RMSE\_lm }\CommentTok{\# 5.9}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.900007
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ajuster un modèle linéaire avec interactions}
+\CommentTok{\#a completer :}
+\NormalTok{mod\_lm\_inter }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{.}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\AttributeTok{data =}\NormalTok{ housing.train)}
+\FunctionTok{length}\NormalTok{(}\FunctionTok{na.omit}\NormalTok{(mod\_lm\_inter}\SpecialCharTok{$}\NormalTok{coefficients))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 79
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{Y\_pred\_lm\_inter }\OtherTok{=} \FunctionTok{predict}\NormalTok{(mod\_lm\_inter, housing.test[, }\SpecialCharTok{{-}}\NormalTok{p])}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_lm\_inter }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_pred\_lm\_inter)}
+\NormalTok{RMSE\_lm\_inter  }\CommentTok{\# 4.41}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.416989
+\end{verbatim}
+
+On remarque qu'en ajoutant les termes d'interaction l'erreur a diminué.
+Cependant le modèle avec interaction est très complexe (79 termes) donc
+certainement trop variable. L'idée est de chercher un modèle plus
+prédictif, i.e.~avec une RMSE plus faible que 4.836.
+
+\hypertarget{moduxe8les-linuxe9aires-puxe9nalisuxe9s}{%
+\section{Modèles linéaires
+pénalisés}\label{moduxe8les-linuxe9aires-puxe9nalisuxe9s}}
+
+Ajuster une régression lasso (commande lars du package lars ). Pour ce
+faire, il est nécessaire de créer une matrice contenant tous les termes
+(variables principales et les interactions).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# lasso}
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+
+\FunctionTok{library}\NormalTok{(lars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loaded lars 1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{=} \FunctionTok{as.matrix}\NormalTok{(housing.train[, p])}
+\NormalTok{x }\OtherTok{=} \FunctionTok{as.matrix}\NormalTok{(housing.train[, }\SpecialCharTok{{-}}\NormalTok{p])}
+\NormalTok{x\_extend }\OtherTok{=}\NormalTok{ x}
+
+\CommentTok{\# makes the binary combinations of all columns}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}2}\NormalTok{)) \{}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{)) \{}
+\NormalTok{    x\_extend }\OtherTok{=} \FunctionTok{cbind}\NormalTok{(x\_extend, x[, i] }\SpecialCharTok{*}\NormalTok{ x[, j])}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{mod\_lasso }\OtherTok{=} \FunctionTok{lars}\NormalTok{(x\_extend, y, }\AttributeTok{type =} \StringTok{"lasso"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+--- Etudier la matrice des coefficients (commande coef.lars) et tracer
+le modèle (commande plot).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(}\FunctionTok{coef.lars}\NormalTok{(mod\_lasso)) }\CommentTok{\# 186 valeurs de lambda différentes et 133 coefficients}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 186 133
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Faire un choix de ligne entre 1 (très forte pénalité) et 186 (faible pénalité)}
+\NormalTok{l }\OtherTok{=} \DecValTok{10}
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{coef.lars}\NormalTok{(mod\_lasso)[l, ] }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)  }\CommentTok{\# n de coefs = 0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 127
+\end{verbatim}
+
+With l = 10, sum equals 127, whareas with l = 100, sum equals 82. This
+shows that with a lesser l, more coefficients are getting 0 as a value.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(mod\_lasso, }\AttributeTok{cex =} \DecValTok{1}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{3}\NormalTok{, }\AttributeTok{col =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}
+  \DecValTok{0}\NormalTok{,}
+  \DecValTok{0}\NormalTok{,}
+  \FunctionTok{names}\NormalTok{(housing.train[, }\SpecialCharTok{{-}}\NormalTok{p]),}
+  \AttributeTok{col =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),}
+  \AttributeTok{lty =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, p}\DecValTok{{-}1}\NormalTok{),}
+  \AttributeTok{lwd =} \FunctionTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{, p}\DecValTok{{-}1}\NormalTok{),}
+  \AttributeTok{cex =} \FloatTok{0.5}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+--- Faire un choix du meilleur modèle en étudiant la décroissance de
+l'erreur par validation croisée (commande cv.lars). Faire un choix de la
+meilleure fraction (directement liée à la valeur du lambda. Fraction = 1
+(resp. Fraction = 0) correspond à \(\lambda = 0\) (resp.
+\(\lambda = +\infty\))).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CV }\OtherTok{=} \FunctionTok{cv.lars}\NormalTok{(x, y, }\AttributeTok{K =} \DecValTok{10}\NormalTok{, }\AttributeTok{index=}\FunctionTok{seq}\NormalTok{(}\AttributeTok{from =} \DecValTok{0}\NormalTok{, }\AttributeTok{to =} \DecValTok{1}\NormalTok{, }\AttributeTok{length =} \DecValTok{100}\NormalTok{),}
+             \AttributeTok{trace =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{plot.it =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{se =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{type =} \StringTok{"lasso"}\NormalTok{, }\AttributeTok{mode =} \StringTok{"fraction"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{value }\OtherTok{=} \FloatTok{0.4}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Donner le nombre de coefficients non nuls du modèle final retenu. La
+  pénalité a-t-elle jouer son rôle ?
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{coef\_lasso\_beter }\OtherTok{\textless{}{-}} \FunctionTok{predict.lars}\NormalTok{(mod\_lasso, }\AttributeTok{s =}\NormalTok{ value, }\AttributeTok{mode =} \StringTok{"frac"}\NormalTok{, }\AttributeTok{type =} \StringTok{"coef"}\NormalTok{)}
+\CommentTok{\#a completer :}
+\NormalTok{nb\_coef\_nul }\OtherTok{=} \FunctionTok{sum}\NormalTok{(coef\_lasso\_beter}\SpecialCharTok{$}\NormalTok{coefficients }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }
+\NormalTok{nb\_coef\_nul}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 51
+\end{verbatim}
+
+Obtemos 51 coeficientes nulos. Um valor menor que os valores que
+obtivemos antes. L portanto seria maior que 100.
+
+--- Evaluer la qualité prédictive du modèle sur l'ensemble test
+(commande predict.lars ).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{newx }\OtherTok{=} \FunctionTok{as.matrix}\NormalTok{(housing.test[,}\SpecialCharTok{{-}}\NormalTok{p])}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}2}\NormalTok{))}
+\NormalTok{\{}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{))}
+\NormalTok{  \{}
+\NormalTok{    newx }\OtherTok{=} \FunctionTok{cbind}\NormalTok{(newx,newx[,i]}\SpecialCharTok{*}\NormalTok{newx[,j])}
+\NormalTok{  \}}
+\NormalTok{\}}
+\CommentTok{\#a completer :}
+\NormalTok{fits }\OtherTok{\textless{}{-}} \FunctionTok{predict.lars}\NormalTok{(mod\_lasso, newx, }\AttributeTok{s =}\NormalTok{ value, }\AttributeTok{mode =} \StringTok{"frac"}\NormalTok{)}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_lasso }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], fits}\SpecialCharTok{$}\NormalTok{fit)}
+\FunctionTok{c}\NormalTok{(RMSE\_lm\_inter, RMSE\_lasso)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.416989 4.581404
+\end{verbatim}
+
+Ajuster maintenant une régression Ridge. La pénalité Ridge ne s'applique
+pas sur l'intercept. Il est donc nécessaire d'enlever le terme constant
+avant d'appliquer la procédure lm.ridge de la library MASS.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\#ajustement ridge }
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{library}\NormalTok{(MASS)}
+\CommentTok{\#on part d\textquotesingle{}une matrice centrée réduite}
+\NormalTok{housing.train2 }\OtherTok{=} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{scale}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(x\_extend, y))) }\CommentTok{\# scale does the normalization of columns}
+\CommentTok{\#on garde en mémoire moyenne et écart type des données initiales}
+\NormalTok{mean.train }\OtherTok{=} \FunctionTok{apply}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(x\_extend, y), }\DecValTok{2}\NormalTok{, mean)  }\CommentTok{\# 2 = mean is by column}
+\NormalTok{sd.train }\OtherTok{=} \FunctionTok{apply}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(x\_extend, y), }\DecValTok{2}\NormalTok{, sd)  }\CommentTok{\# 2 = sd is by column}
+
+\CommentTok{\#On se donne un vecteur de poids lambda}
+\NormalTok{lambda }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{10}\NormalTok{, }\FloatTok{0.01}\NormalTok{), }\FunctionTok{seq}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{100}\NormalTok{, }\DecValTok{10}\NormalTok{), }\DecValTok{1000}\NormalTok{, }\DecValTok{2000}\NormalTok{)}
+
+\NormalTok{p2 }\OtherTok{=} \FunctionTok{ncol}\NormalTok{(housing.train2)}
+\NormalTok{mod\_ridge }\OtherTok{=} \FunctionTok{lm.ridge}\NormalTok{(V134 }\SpecialCharTok{\textasciitilde{}}\NormalTok{.}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{data =}\NormalTok{ housing.train2, }\AttributeTok{lambda =}\NormalTok{ lambda) }
+\CommentTok{\# V134 is the class column with centre reduit}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Tracer les différents beta en fonction du \(\lambda\). Que
+  remarquez-vous ?
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#tracer des différentes valeurs des beta en fonction de lambda}
+\NormalTok{beta\_mat }\OtherTok{=}\NormalTok{ mod\_ridge}\SpecialCharTok{$}\NormalTok{coef}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(lambda, beta\_mat[}\DecValTok{1}\NormalTok{, ], }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(beta\_mat),}
+     \FunctionTok{max}\NormalTok{(beta\_mat)), }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"coefficients"}\NormalTok{, }\AttributeTok{res =} \DecValTok{600}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in plot.window(...): "res" is not a graphical parameter
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in plot.xy(xy, type, ...): "res" is not a graphical parameter
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in axis(side = side, at = at, labels = labels, ...): "res" is not a
+## graphical parameter
+
+## Warning in axis(side = side, at = at, labels = labels, ...): "res" is not a
+## graphical parameter
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in box(...): "res" is not a graphical parameter
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): "res" is not a graphical parameter
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lines}\NormalTok{(lambda, beta\_mat[}\DecValTok{1}\NormalTok{, ], }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{))}
+\NormalTok{\{}
+  \FunctionTok{points}\NormalTok{(lambda, beta\_mat[i, ], }\AttributeTok{col =}\NormalTok{ i, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{cex=}\FloatTok{0.4}\NormalTok{)}
+  \FunctionTok{lines}\NormalTok{(lambda, beta\_mat[i, ], }\AttributeTok{col =}\NormalTok{ i, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+  
+\NormalTok{\}}
+
+\FunctionTok{legend}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\FloatTok{2.5}\NormalTok{, }\FunctionTok{row.names}\NormalTok{(beta\_mat),}
+       \AttributeTok{col =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{p, }\AttributeTok{lty =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, p), }\AttributeTok{cex =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{pch =}  \FunctionTok{rep}\NormalTok{(}\DecValTok{19}\NormalTok{, }\DecValTok{8}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Nesse caso os termos não vão diretamente à zero, por mais que se
+aproximem dele.
+
+Le choix du meilleur \(\lambda\) se fait par validation croisée.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# tracer du GCV en fonction du lambda }
+\FunctionTok{plot}\NormalTok{(lambda, mod\_ridge}\SpecialCharTok{$}\NormalTok{GCV, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{col =} \DecValTok{6}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"lambda"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"GCV"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(lambda[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{], mod\_ridge}\SpecialCharTok{$}\NormalTok{GCV[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{], }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{col =} \DecValTok{6}\NormalTok{, }\AttributeTok{xlab =} \StringTok{\textquotesingle{}lambda\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"GCV"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-11-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# choix du meilleur beta. On récupère la position (indice) où le GCV est minimum}
+\NormalTok{indice }\OtherTok{=} \DecValTok{10}  \CommentTok{\# 0.1 : command which.min()}
+\NormalTok{beta }\OtherTok{=}\NormalTok{ beta\_mat[, indice]}
+\end{Highlighting}
+\end{Shaded}
+
+La remise à l'échelle est nécessaire pour la prédiction.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#prédiction du modèle et remise à l\textquotesingle{}échelle pour comparer à diab.test}
+\NormalTok{ypred }\OtherTok{=}  \FunctionTok{as.matrix}\NormalTok{((x\_extend}\SpecialCharTok{{-}}\FunctionTok{t}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(mean.train[}\SpecialCharTok{{-}}\NormalTok{p2],}\DecValTok{300}\NormalTok{),p2}\DecValTok{{-}1}\NormalTok{,}\DecValTok{300}\NormalTok{)))}\SpecialCharTok{/}\FunctionTok{t}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(sd.train[}\SpecialCharTok{{-}}\NormalTok{p2],}\DecValTok{300}\NormalTok{),p2}\DecValTok{{-}1}\NormalTok{,}\DecValTok{300}\NormalTok{)))}\SpecialCharTok{\%*\%}\FunctionTok{matrix}\NormalTok{(beta,p2}\DecValTok{{-}1}\NormalTok{,}\DecValTok{1}\NormalTok{)}\SpecialCharTok{*}\NormalTok{sd.train[p2] }\SpecialCharTok{+}\NormalTok{ mean.train[p2]}
+
+\NormalTok{X\_test }\OtherTok{=} \FunctionTok{as.matrix}\NormalTok{(newx }\SpecialCharTok{{-}} \FunctionTok{t}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(mean.train[}\SpecialCharTok{{-}}\NormalTok{p2], }\DecValTok{206}\NormalTok{), p2}\DecValTok{{-}1}\NormalTok{, }\DecValTok{206}\NormalTok{)))}
+\NormalTok{X\_test }\OtherTok{=}\NormalTok{ X\_test }\SpecialCharTok{/} \FunctionTok{t}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(sd.train[}\SpecialCharTok{{-}}\NormalTok{p2], }\DecValTok{206}\NormalTok{), p2}\DecValTok{{-}1}\NormalTok{, }\DecValTok{206}\NormalTok{))}
+\NormalTok{Y\_pred\_ridge }\OtherTok{=}\NormalTok{ (}\FunctionTok{as.matrix}\NormalTok{(X\_test)}\SpecialCharTok{\%*\%}\FunctionTok{matrix}\NormalTok{(beta,p2}\DecValTok{{-}1}\NormalTok{,}\DecValTok{1}\NormalTok{))}\SpecialCharTok{*}\NormalTok{sd.train[p2]}\SpecialCharTok{+}\NormalTok{mean.train[p2]}
+
+\NormalTok{RMSE\_ridge }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_pred\_ridge)}
+\FunctionTok{c}\NormalTok{(RMSE\_lm\_inter, RMSE\_lasso, RMSE\_ridge)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.416989 4.581404 4.653380
+\end{verbatim}
+
+\hypertarget{moduxe8les-uxe0-base-darbres}{%
+\section{Modèles à base d'arbres}\label{moduxe8les-uxe0-base-darbres}}
+
+On commence par ajuster un modèle CART de la librairie Rpart.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\#ajustement cart + random forest}
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{library}\NormalTok{(rpart)}
+\NormalTok{cont }\OtherTok{=} \FunctionTok{rpart.control}\NormalTok{(}\AttributeTok{cp =} \FloatTok{0.0001}\NormalTok{)  }\CommentTok{\# define minimum cp}
+\NormalTok{mod\_tree }\OtherTok{\textless{}{-}} \FunctionTok{rpart}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data =}\NormalTok{ housing.train, }\AttributeTok{control =}\NormalTok{ cont)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(mod\_tree, }\AttributeTok{uniform =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{margin =} \FloatTok{0.05}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(mod\_tree, }\AttributeTok{cex =} \FloatTok{0.6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{itemize}
+\item
+  A quoi correspond le paramètre \(\textit{cp}\) ? Il contrôle la
+  complexité de l'arbre (complexity parameter).
+\item
+  Le choix de la valeur 0.0001 conduit-il à un arbre grossier ou
+  détaillé ? Un \(\textit{cp}\) petit entraine un arbre profond avec
+  beaucoup de noeuds.
+\item
+  Quelles sont les variables les plus influentes ? RM et LSTAT (look
+  both the height and frequency)
+\item
+  Pourquoi n'est-il pas nécessaire ici de mettre en place un modèle avec
+  interaction ? Trees already consider the interactions effects
+\item
+  Faire un choix du meilleur \(\textit{cp}\) par validation croisée
+  (quatrième colonne de l'attribut \(\textit{cptable}\) d'un objet de
+  type \(\textit{rpart}\)).
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Apparent : apprentissage, X relative : par validation croisée}
+\NormalTok{mod\_tree}\SpecialCharTok{$}\NormalTok{cptable }\CommentTok{\# ele testa cps maiores (árvores mais simples), antes de chegar em cp=0.0001}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              CP nsplit  rel error    xerror       xstd
+## 1  0.5030656136      0 1.00000000 1.0114478 0.11451713
+## 2  0.1662686916      1 0.49693439 0.5647737 0.05827073
+## 3  0.0782727816      2 0.33066569 0.4107676 0.05333136
+## 4  0.0414868184      3 0.25239291 0.2892056 0.03197709
+## 5  0.0382249961      4 0.21090609 0.2802356 0.03224474
+## 6  0.0148019951      5 0.17268110 0.2229881 0.03005734
+## 7  0.0130550489      6 0.15787910 0.1998693 0.02349025
+## 8  0.0111708195      7 0.14482405 0.1978706 0.02406715
+## 9  0.0108478201      8 0.13365324 0.1894953 0.02378675
+## 10 0.0051137140      9 0.12280542 0.1760483 0.02352917
+## 11 0.0047095058     10 0.11769170 0.1752187 0.02347684
+## 12 0.0027083741     11 0.11298220 0.1681780 0.02349925
+## 13 0.0019607608     13 0.10756545 0.1697190 0.02364828
+## 14 0.0015930841     14 0.10560469 0.1708474 0.02350104
+## 15 0.0014471054     15 0.10401160 0.1718676 0.02353299
+## 16 0.0013119307     16 0.10256450 0.1727270 0.02363719
+## 17 0.0012952061     18 0.09994064 0.1710708 0.02362531
+## 18 0.0009682042     19 0.09864543 0.1732953 0.02440385
+## 19 0.0008134445     20 0.09767723 0.1753319 0.02442750
+## 20 0.0005885364     21 0.09686378 0.1764818 0.02444670
+## 21 0.0005644762     22 0.09627524 0.1764812 0.02444766
+## 22 0.0004751045     23 0.09571077 0.1761164 0.02445440
+## 23 0.0002569774     24 0.09523566 0.1766070 0.02447482
+## 24 0.0001000000     25 0.09497869 0.1766223 0.02447450
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#affichage uniquement cp\textgreater{}0.01}
+\CommentTok{\#summary(mod\_tree, cp=0.01)}
+
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)) }\CommentTok{\# one plot on one page}
+\FunctionTok{rsq.rpart}\NormalTok{(mod\_tree) }\CommentTok{\# visualize cross{-}validation results}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Regression tree:
+## rpart(formula = class ~ ., data = housing.train, control = cont)
+## 
+## Variables actually used in tree construction:
+## [1] AGE   CRIM  DIS   INDUS LSTAT NOX   RM    TAX  
+## 
+## Root node error: 22208/300 = 74.025
+## 
+## n= 300 
+## 
+##            CP nsplit rel error  xerror     xstd
+## 1  0.50306561      0  1.000000 1.01145 0.114517
+## 2  0.16626869      1  0.496934 0.56477 0.058271
+## 3  0.07827278      2  0.330666 0.41077 0.053331
+## 4  0.04148682      3  0.252393 0.28921 0.031977
+## 5  0.03822500      4  0.210906 0.28024 0.032245
+## 6  0.01480200      5  0.172681 0.22299 0.030057
+## 7  0.01305505      6  0.157879 0.19987 0.023490
+## 8  0.01117082      7  0.144824 0.19787 0.024067
+## 9  0.01084782      8  0.133653 0.18950 0.023787
+## 10 0.00511371      9  0.122805 0.17605 0.023529
+## 11 0.00470951     10  0.117692 0.17522 0.023477
+## 12 0.00270837     11  0.112982 0.16818 0.023499
+## 13 0.00196076     13  0.107565 0.16972 0.023648
+## 14 0.00159308     14  0.105605 0.17085 0.023501
+## 15 0.00144711     15  0.104012 0.17187 0.023533
+## 16 0.00131193     16  0.102564 0.17273 0.023637
+## 17 0.00129521     18  0.099941 0.17107 0.023625
+## 18 0.00096820     19  0.098645 0.17330 0.024404
+## 19 0.00081344     20  0.097677 0.17533 0.024427
+## 20 0.00058854     21  0.096864 0.17648 0.024447
+## 21 0.00056448     22  0.096275 0.17648 0.024448
+## 22 0.00047510     23  0.095711 0.17612 0.024454
+## 23 0.00025698     24  0.095236 0.17661 0.024475
+## 24 0.00010000     25  0.094979 0.17662 0.024474
+\end{verbatim}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-14-1.pdf}
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-14-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the best result is given by nsplit = 11}
+\NormalTok{mod\_tree}\SpecialCharTok{$}\NormalTok{cptable[}\DecValTok{12}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.002708374
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Elaguer l'arbre avec ce choix de \(\textit{cp}\) (fonction
+  \(\textit{prune}\))
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{mod\_tree\_pruned }\OtherTok{=} \FunctionTok{prune}\NormalTok{(mod\_tree, }\AttributeTok{cp =} \FloatTok{0.002708374}\NormalTok{)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(mod\_tree\_pruned)}
+\FunctionTok{text}\NormalTok{(mod\_tree\_pruned, }\AttributeTok{use.n =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{y\_pred\_tree }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mod\_tree\_pruned, housing.test[, }\SpecialCharTok{{-}}\NormalTok{p])}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_cart }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], y\_pred\_tree)}
+\NormalTok{RMSE\_cart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.479321
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Mettre en place un modèle de boosting en utilisant la routine \(gbm\)
+  de la librairie \(gbm\).
+\item
+  Combien d'arbres doit-on considérer ? 726
+\item
+  Quelles sont les variables les plus influentes avec ce modèle ? RM et
+  LSTAT
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#modèle boosted trees}
+\FunctionTok{library}\NormalTok{(gbm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loaded gbm 2.1.8.1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod\_boosted }\OtherTok{\textless{}{-}} \FunctionTok{gbm}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data =}\NormalTok{ housing.train, }\AttributeTok{n.trees =} \DecValTok{10000}\NormalTok{, }\AttributeTok{cv.folds =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Distribution not specified, assuming gaussian ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{best.iter }\OtherTok{\textless{}{-}} \FunctionTok{gbm.perf}\NormalTok{(mod\_boosted, }\AttributeTok{method =} \StringTok{"cv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\FunctionTok{summary}\NormalTok{(mod\_boosted, }\AttributeTok{n.trees =} \DecValTok{1}\NormalTok{)          }\CommentTok{\# based on the first tree}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             var rel.inf
+## LSTAT     LSTAT     100
+## CRIM       CRIM       0
+## ZN           ZN       0
+## INDUS     INDUS       0
+## CHAS       CHAS       0
+## NOX         NOX       0
+## RM           RM       0
+## AGE         AGE       0
+## DIS         DIS       0
+## RAD         RAD       0
+## TAX         TAX       0
+## PTRATIO PTRATIO       0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(mod\_boosted, }\AttributeTok{n.trees =}\NormalTok{ best.iter)  }\CommentTok{\# based on the estimated best number of trees}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-17-2.pdf}
+
+\begin{verbatim}
+##             var     rel.inf
+## RM           RM 42.36820423
+## LSTAT     LSTAT 32.15865779
+## NOX         NOX  5.83833014
+## CRIM       CRIM  4.46132510
+## PTRATIO PTRATIO  4.10908279
+## DIS         DIS  3.61888325
+## TAX         TAX  2.30171792
+## INDUS     INDUS  2.19312476
+## AGE         AGE  1.88764093
+## RAD         RAD  0.64305519
+## CHAS       CHAS  0.38004279
+## ZN           ZN  0.03993511
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(mod\_boosted, }\AttributeTok{n.trees =} \DecValTok{3000}\NormalTok{)       }\CommentTok{\# based on something}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             var    rel.inf
+## RM           RM 39.3864807
+## LSTAT     LSTAT 26.8133470
+## CRIM       CRIM  6.7066555
+## NOX         NOX  5.7859931
+## DIS         DIS  5.5650171
+## PTRATIO PTRATIO  4.6317920
+## AGE         AGE  3.7671004
+## INDUS     INDUS  3.4174186
+## TAX         TAX  2.7119535
+## RAD         RAD  0.7809762
+## CHAS       CHAS  0.3185178
+## ZN           ZN  0.1147481
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#print(pretty.gbm.tree(mod\_boosted,1))}
+\CommentTok{\#print(pretty.gbm.tree(mod\_boosted,mod\_boosted$n.trees))}
+\NormalTok{f.predict1 }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mod\_boosted, housing.test[, }\SpecialCharTok{{-}}\NormalTok{p], }\DecValTok{1}\NormalTok{)}
+\NormalTok{f.predict2 }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mod\_boosted, housing.test[, }\SpecialCharTok{{-}}\NormalTok{p], }\DecValTok{3000}\NormalTok{)}
+\NormalTok{f.predict3 }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mod\_boosted, housing.test[, }\SpecialCharTok{{-}}\NormalTok{p], best.iter)}
+\NormalTok{RMSE\_b1 }\OtherTok{=}  \FunctionTok{RMSE}\NormalTok{(housing.test[, p], f.predict1)}
+\NormalTok{RMSE\_b2 }\OtherTok{=}  \FunctionTok{RMSE}\NormalTok{(housing.test[, p], f.predict2)}
+\NormalTok{RMSE\_b3 }\OtherTok{=}  \FunctionTok{RMSE}\NormalTok{(housing.test[, p], f.predict3)}
+\FunctionTok{c}\NormalTok{(RMSE\_b1, RMSE\_b2, RMSE\_b3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 9.618313 5.024867 4.853227
+\end{verbatim}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-17-3.pdf}
+
+On construit maintenant une procédure de bagging. L'idée est de moyenner
+des arbres CART construits sur des échantillons bootstrap des données de
+départ. Un échantillon Bootstrap est un tirage avec remise de N points
+parmi les N points de l'échantillon initial.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#modèle arbre bagging}
+\NormalTok{cont }\OtherTok{=} \FunctionTok{rpart.control}\NormalTok{(}\AttributeTok{minsplit =} \DecValTok{2}\NormalTok{, }\AttributeTok{cp =} \FloatTok{0.0001}\NormalTok{)}
+\NormalTok{B }\OtherTok{=} \DecValTok{2000}
+\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(housing.test), B)}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{B) \{}
+\NormalTok{  u }\OtherTok{=} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(housing.train), }\FunctionTok{nrow}\NormalTok{(housing.train), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  appren }\OtherTok{\textless{}{-}}\NormalTok{ housing.train[u, ]}
+\NormalTok{  mod\_tree }\OtherTok{\textless{}{-}} \FunctionTok{rpart}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data =}\NormalTok{ appren, }\AttributeTok{control =}\NormalTok{ cont)}
+\NormalTok{  Y[, i] }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mod\_tree, }\AttributeTok{newdata =}\NormalTok{ housing.test)}
+\NormalTok{\}}
+
+\CommentTok{\#Y est de taille 206*B, 206 etant le nombre de points tests}
+\CommentTok{\#a completer :}
+\NormalTok{Y\_pred\_bag }\OtherTok{=} \FunctionTok{apply}\NormalTok{(Y, }\DecValTok{1}\NormalTok{, mean)  }\CommentTok{\# mean of each tree\textasciigrave{}s result}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_bag }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_pred\_bag)}
+\NormalTok{RMSE\_bag}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.864175
+\end{verbatim}
+
+Construire un modèle de Type Random Forest. - quelle est la différence
+entre un modèle type bagging et un modèle de forets aléatoires ?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#modèle arbres random forest}
+\FunctionTok{library}\NormalTok{(randomForest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## randomForest 4.7-1.1
+\end{verbatim}
+
+\begin{verbatim}
+## Type rfNews() to see new features/changes/bug fixes.
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'randomForest'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:ggplot2':
+## 
+##     margin
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod\_RF }\OtherTok{\textless{}{-}} \FunctionTok{randomForest}\NormalTok{(class}\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data =}\NormalTok{ housing.train, }\AttributeTok{ntree =} \DecValTok{300}\NormalTok{, }\AttributeTok{sampsize =} \FunctionTok{nrow}\NormalTok{(housing.train))}
+
+\FunctionTok{summary}\NormalTok{(mod\_RF)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Length Class  Mode     
+## call              5    -none- call     
+## type              1    -none- character
+## predicted       300    -none- numeric  
+## mse             300    -none- numeric  
+## rsq             300    -none- numeric  
+## oob.times       300    -none- numeric  
+## importance       12    -none- numeric  
+## importanceSD      0    -none- NULL     
+## localImportance   0    -none- NULL     
+## proximity         0    -none- NULL     
+## ntree             1    -none- numeric  
+## mtry              1    -none- numeric  
+## forest           11    -none- list     
+## coefs             0    -none- NULL     
+## y               300    -none- numeric  
+## test              0    -none- NULL     
+## inbag             0    -none- NULL     
+## terms             3    terms  call
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{importance}\NormalTok{(mod\_RF)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         IncNodePurity
+## CRIM       1289.00260
+## ZN          194.06135
+## INDUS      1409.38286
+## CHAS         41.82852
+## NOX        1309.59676
+## RM         7471.05953
+## AGE         656.74447
+## DIS        1036.39422
+## RAD         144.51651
+## TAX        1059.09902
+## PTRATIO    1306.87398
+## LSTAT      5852.45326
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(mod\_RF)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{which}\NormalTok{(mod\_RF}\SpecialCharTok{$}\NormalTok{trees }\SpecialCharTok{==} \FunctionTok{min}\NormalTok{(mod\_RF}\SpecialCharTok{$}\NormalTok{trees), }\AttributeTok{arr.ind =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in min(mod_RF$trees): no non-missing arguments to min; returning Inf
+\end{verbatim}
+
+\begin{verbatim}
+## integer(0)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{Y\_pred\_RF }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mod\_RF,housing.test)}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_RF }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_pred\_RF)}
+\NormalTok{RMSE\_RF}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.931825
+\end{verbatim}
+
+\hypertarget{muxe9thode-de-ruxe9duction-de-dimension-par-orthogonalisation}{%
+\section{Méthode de réduction de dimension par
+orthogonalisation}\label{muxe9thode-de-ruxe9duction-de-dimension-par-orthogonalisation}}
+
+On s'intéresse maintenant aux modèles PCR et PLS construits à partir de
+la matrice augmentée des interactions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(pls)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'pls'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:caret':
+## 
+##     R2
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:DiceEval':
+## 
+##     R2
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:stats':
+## 
+##     loadings
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#PCR}
+\NormalTok{housing.pcr }\OtherTok{\textless{}{-}} \FunctionTok{pcr}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\DecValTok{60}\NormalTok{, }\AttributeTok{data =}\NormalTok{ housing.train)}
+\end{Highlighting}
+\end{Shaded}
+
+Faire le choix du nombre de composantes par validation croisée en
+utilisant la routine crossval.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{housing.cv }\OtherTok{\textless{}{-}} \FunctionTok{crossval}\NormalTok{(housing.pcr,}\AttributeTok{segments =} \DecValTok{10}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{MSEP}\NormalTok{(housing.cv))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+Faire la prédiction du modèle pour le nombre de composantes
+sélectionnées.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{nbcomp }\OtherTok{=} \DecValTok{36}
+\NormalTok{Y\_PCR }\OtherTok{=} \FunctionTok{predict}\NormalTok{(housing.pcr, }\AttributeTok{newdata =}\NormalTok{ housing.test, }\AttributeTok{ncomp =}\NormalTok{ nbcomp, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_PCR }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_PCR)}
+\NormalTok{RMSE\_PCR}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.487672
+\end{verbatim}
+
+Tracer les premières fonctions propres et interpréter.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{housing.pcr }\OtherTok{\textless{}{-}} \FunctionTok{pcr}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, nbcomp, }\AttributeTok{data =}\NormalTok{ housing.train)}
+\CommentTok{\#coef(housing.pcr)}
+
+\CommentTok{\#tracer des premières fonctions propres }
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),housing.pcr}\SpecialCharTok{$}\NormalTok{loadings[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),}\DecValTok{1}\NormalTok{],}\AttributeTok{type =}\StringTok{"l"}\NormalTok{,}\AttributeTok{col =} \DecValTok{1}\NormalTok{,}\AttributeTok{ylim =}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.01}\NormalTok{,}\FloatTok{0.01}\NormalTok{))}
+\FunctionTok{points}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),housing.pcr}\SpecialCharTok{$}\NormalTok{loadings[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),}\DecValTok{1}\NormalTok{],}\AttributeTok{col =} \DecValTok{1}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\DecValTok{4}\NormalTok{) }
+\NormalTok{\{}
+  \FunctionTok{points}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),housing.pcr}\SpecialCharTok{$}\NormalTok{loadings[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),i],}\AttributeTok{col =}\NormalTok{ i)}
+  \FunctionTok{lines}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),housing.pcr}\SpecialCharTok{$}\NormalTok{loadings[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(p}\DecValTok{{-}1}\NormalTok{),i],}\AttributeTok{col =}\NormalTok{ i)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#PLS}
+\NormalTok{housing.pls }\OtherTok{\textless{}{-}} \FunctionTok{plsr}\NormalTok{(class }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\DecValTok{60}\NormalTok{, }\AttributeTok{data =}\NormalTok{ housing.train)}
+\NormalTok{housing.pls.cv }\OtherTok{\textless{}{-}} \FunctionTok{crossval}\NormalTok{(housing.pls,}\AttributeTok{segments =}\DecValTok{10}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{MSEP}\NormalTok{(housing.pls.cv))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{BE3_partie1_incomplet_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#a completer :}
+\NormalTok{Y\_PLS }\OtherTok{=} \FunctionTok{predict}\NormalTok{(housing.pls, }\AttributeTok{newdata =}\NormalTok{ housing.test, }\AttributeTok{ncomp =}\NormalTok{ nbcomp, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\CommentTok{\#a completer :}
+\NormalTok{RMSE\_PLS }\OtherTok{=} \FunctionTok{RMSE}\NormalTok{(housing.test[, p], Y\_PLS)}
+\NormalTok{RMSE\_PLS}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.993442
+\end{verbatim}
+
+\end{document}

@@ -4,8 +4,8 @@ author: "Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES"
 course: "Statistique appliquée aux sciences de l'ingénieur"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 <!-- 
