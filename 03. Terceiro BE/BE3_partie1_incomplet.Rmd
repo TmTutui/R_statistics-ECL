@@ -219,7 +219,6 @@ p2 = ncol(housing.train2)
 mod_ridge = lm.ridge(V134 ~.-1, data = housing.train2, lambda = lambda) 
 # V134 is the class column with centre reduit
 
-
 ```
 
 - Tracer les différents beta en fonction du $\lambda$. Que remarquez-vous ? 
@@ -292,6 +291,7 @@ plot(mod_tree, uniform = TRUE, margin = 0.05)
 text(mod_tree, cex = 0.6)
 
 ```
+
 - A quoi correspond le paramètre $\textit{cp}$ ? Il  contrôle la complexité de l'arbre (complexity parameter). 
 - Le choix de la valeur  0.0001 conduit-il à un arbre grossier ou détaillé ? Un $\textit{cp}$ petit entraine un arbre profond avec beaucoup de noeuds. 
 - Quelles sont les variables les plus influentes ? RM et LSTAT (look both the height and frequency)
@@ -313,6 +313,7 @@ rsq.rpart(mod_tree) # visualize cross-validation results
 mod_tree$cptable[12, 1]
 
 ```
+
  - Elaguer l'arbre avec ce choix de $\textit{cp}$ (fonction $\textit{prune}$)
 
 ```{r}
@@ -400,9 +401,10 @@ plot(mod_RF)
 which(mod_RF$trees == min(mod_RF$trees), arr.ind = TRUE)
 
 #a completer :
-Y_pred_RF <- predict( ...)
+Y_pred_RF <- predict(mod_RF,housing.test)
 #a completer :
-RMSE_RF = 
+RMSE_RF = RMSE(housing.test[, p], Y_pred_RF)
+RMSE_RF
 ```
 
 # Méthode de réduction de dimension par orthogonalisation
@@ -419,7 +421,7 @@ Faire le choix du nombre de composantes par validation croisée en utilisant la 
 
 ```{r}
 #a completer :
-housing.cv <- 
+housing.cv <- crossval(housing.pcr,segments = 10)
 plot(MSEP(housing.cv))
 ```
 
@@ -427,10 +429,10 @@ Faire la prédiction du modèle pour le nombre de composantes sélectionnées.
 
 ```{r}
 #a completer :
-nbcomp = 
+nbcomp = 36
 Y_PCR = predict(housing.pcr, newdata = housing.test, ncomp = nbcomp, type = "response")
 #a completer :
-RMSE_PCR = 
+RMSE_PCR = RMSE(housing.test[, p], Y_PCR)
 RMSE_PCR
 ```
 Tracer les premières fonctions propres et interpréter.
@@ -455,9 +457,9 @@ housing.pls <- plsr(class ~ .^2, 60, data = housing.train)
 housing.pls.cv <- crossval(housing.pls,segments =10)
 plot(MSEP(housing.pls.cv))
 #a completer :
-Y_PLS = 
+Y_PLS = predict(housing.pls, newdata = housing.test, ncomp = nbcomp, type = "response")
 #a completer :
-RMSE_PLS = 
+RMSE_PLS = RMSE(housing.test[, p], Y_PLS)
 RMSE_PLS
 
 ```
