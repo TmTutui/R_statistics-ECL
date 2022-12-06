@@ -404,6 +404,7 @@ Y_pred_RF <- predict( ...)
 #a completer :
 RMSE_RF = 
 ```
+
 # Méthode de réduction de dimension par orthogonalisation
 
 On s'intéresse maintenant aux modèles PCR et PLS construits à partir de la matrice augmentée des interactions. 
