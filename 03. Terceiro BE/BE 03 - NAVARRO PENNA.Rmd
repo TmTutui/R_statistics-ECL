@@ -270,13 +270,9 @@ text(mod_tree_pruned, use.n = TRUE, cex = 0.7)
 
 ```{r}
 library(DiceEval)
-<<<<<<< Updated upstream
+
 y_pred_tree <- predict(mod_tree_pruned, carseat.test[, -1])
 RMSE_cart = RMSE(carseat.test[, 1], y_pred_tree)
-=======
-y_pred_tree <- predict(mod_tree_pruned, housing.test[, -1])
-RMSE_cart = RMSE(housing.test[, 1], y_pred_tree)
->>>>>>> Stashed changes
 RMSE_cart
 ```
 
