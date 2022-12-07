@@ -454,7 +454,7 @@ for (i in 2:4)
 ```{r}
 #PLS
 housing.pls <- plsr(class ~ .^2, 60, data = housing.train)
-housing.pls.cv <- crossval(housing.pls,segments =10)
+housing.pls.cv <- crossval(housing.pls, segments = 10)
 plot(MSEP(housing.pls.cv))
 #a completer :
 Y_PLS = predict(housing.pls, newdata = housing.test, ncomp = nbcomp, type = "response")
