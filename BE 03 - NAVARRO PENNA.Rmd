@@ -1,0 +1,295 @@
+---
+title: "BE3 - apprentissage statitique"
+author: "Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES"
+course: "Statistique appliquée aux sciences de l'ingénieur"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<!-- 
+    For reference:
+    - http://rmarkdown.rstudio.com>
+    - https://lms.fun-mooc.fr/c4x/UPSUD/42001S02/asset/RMarkdown.html
+ -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercice 1 : Bitume - approches PLS, PCR , Lasso
+
+## 1. Lire les données «bitume.train.txt» et «bitume.test.txt».
+
+```{r}
+library(DiceEval)
+library(car)
+library(MASS)
+
+bitume_train = read.table("bitume.train.txt", header = T)
+bitume_test  = read.table("bitume.test.txt", header = T)
+
+p = ncol(bitume_train)
+
+```
+
+## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
+
+## 3. Faire de même avec l'échantillon test.
+
+## BONUS Faire une classification pour identifier des typologies différentes de spectres (routines kmeans ou hclust). Tracer les pénétrabilités en fonction du numéro de classe. Y-a-t-il un lien ?
+
+## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR et PLS on visualisera notamment les premières fonctions propres. Comparer la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
+
+#### PCR
+
+```{r}
+library(pls)
+#PCR
+bitume_pcr <- pcr(class ~., 60, data = bitume_train)
+```
+
+Faire le choix du nombre de composantes par validation croisée en utilisant la routine crossval.
+
+```{r}
+bitume_cv <- crossval(bitume_pcr, segments = 10)
+plot(MSEP(bitume_cv))
+```
+
+```{r}
+nbcomp = aaaaaaaaaaaa  # choose best value according to the plot
+Y_PCR = predict(bitume_pcr, newdata = bitume_test, ncomp = nbcomp, type = "response") # nolint
+
+RMSE_PCR = RMSE(bitume_test[, p], Y_PCR)
+RMSE_PCR
+```
+
+#### PLS
+
+```{r}
+bitume_pls <- plsr(class ~., 60, data = bitume_train)
+bitume_pls.cv <- crossval(bitume_pls, segments = 10)
+plot(MSEP(bitume_pls.cv))
+```
+
+```{r}
+Y_PLS = predict(bitume_pls, newdata = bitume_test, ncomp = nbcomp, type = "response")
+
+RMSE_PLS = RMSE(bitume_test[, p], Y_PLS)
+RMSE_PLS
+
+```
+
+#### Lasso
+```{r}
+#--------------------------------------------------------------
+# lasso
+#--------------------------------------------------------------
+
+library(lars)
+# y = as.matrix(bitume_train[, p])
+# x = as.matrix(bitume_train[, -p])
+# x_extend = x
+# 
+# # makes the binary combinations of all columns
+# for (i in 1:(p - 2)) {
+#   for (j in 2:(p - 1)) {
+#     x_extend = cbind(x_extend, x[, i] * x[, j])
+#   }
+# }
+
+mod_lasso = lars(bitume_train[, p], bitume_train[, -p], type = "lasso")
+
+CV = cv.lars(x, y, K = 10, index=seq(from = 0, to = 1, length = 100),
+             trace = FALSE, plot.it = TRUE, se = TRUE, type = "lasso", mode = "fraction")
+
+```
+
+
+```{r}
+
+value = aaaaaaaaaaaa  # choose best value according to the plot
+
+# newx = as.matrix(bitume_test[, -p])
+# for (i in 1:(p - 2))
+# {
+#   for (j in 2:(p - 1))
+#   {
+#     newx = cbind(newx, newx[, i] * newx[, j])
+#   }
+# }
+
+fits <- predict.lars(mod_lasso, bitume_test[, -p], s = value, mode = "frac")
+
+RMSE_lasso = RMSE(bitume_test[, p], fits$fit)
+
+```
+
+## 5. Pour les 3 méthodes, représenter les pénétrabilités prédites en fonction des pénétrabilités observées sur les 2 ensembles : apprentissage et test.
+
+## 6. Pourrait-on essayer d'ajuster un modèle linéaire ?
+
+# Exercice 2 : Carseats
+
+```{r}
+carseat = read.table("Carseats.txt", header = T)
+summary(carseat)
+dim(carseat)
+p = ncol(carseat)
+carseat$ShelveLoc = as.factor(carseat$ShelveLoc)
+carseat$Urban = as.factor(carseat$Urban)
+carseat$US = as.factor(carseat$US)
+summary(carseat)
+```
+
+## 1. Séparer les données en un ensemble d'apprentissage (70%) et un ensemble de test (30%).
+
+```{r}
+set.seed(23)
+apprentissage_fraction = as.integer(nrow(carseat) * 0.7)
+u = sample(1:nrow(carseat), apprentissage_fraction)
+carseat.train = carseat[u,]
+carseat.test = carseat[-u,]
+```
+
+## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et les inconvénients de chacun de ces modèles. Illustrer cela sur les données à disposition.
+
+### CART
+
+Pour faire une modèle CART, il faut choisir un minimum cp (paramètre de complexité). 
+Le modèle crée a chaque itération un nouvele noeud de décision qui minimisera l'erreur sur la base d'apprentissage.
+Il arrete la création des nouvelles noeuds de décision lorsque l'erreur est moins important que le cp choisi. 
+Ce modèle considère tout les paramètres et échantillons de la base d'apprentissage et donne à la fin seulement une arbre de régression (ou classification). 
+
+```{r}
+library(rpart)
+cont = rpart.control(cp = 0.0001)  # define minimum cp
+mod_tree <- rpart(Sales ~., data = carseat.train, control = cont)
+par(mfrow = c(1, 1))
+plot(mod_tree, uniform = TRUE, margin = 0.05)
+text(mod_tree, cex = 0.6)
+```
+
+```{r}
+mod_tree$cptable 
+par(mfrow = c(1, 1)) # one plot on one page
+rsq.rpart(mod_tree) # visualize cross-validation results
+```
+
+En regardant la table des cps et le résultats de la validation croiséé, 
+on décide d'utiliser le résultat avec nsplits=09 (ligne 10), car le erreur croisée stabilize
+après cette valeur. 
+
+```{r}
+mod_tree$cptable[10, 1] 
+mod_tree_pruned = prune(mod_tree, cp = 0.0176125)
+par(mfrow = c(1, 1))
+plot(mod_tree_pruned)
+text(mod_tree_pruned, use.n = TRUE, cex = 0.7)
+```
+
+```{r}
+library(DiceEval)
+y_pred_tree <- predict(mod_tree_pruned, carseat.test[, -1])
+RMSE_cart = RMSE(carseat.test[, 1], y_pred_tree)
+RMSE_cart
+```
+
+### Random forest
+
+Dans la random forest, le modèle choisi aleatoirement des paramètres a être enlevés avant de créer l'arbre de regression.
+Il crée donc um nombre importante d'arbres avec des différentes paramètres enlevés. 
+À la fin, le résultat final sera donné par une mésure en considérant également tout ces modèles.
+
+```{r}
+library(randomForest)
+mod_RF <- randomForest(Sales~., data = carseat.train, ntree = 300, sampsize = nrow(carseat.train))
+summary(mod_RF)
+plot(mod_RF)
+```
+
+En obserant le plot, on observe que le meilleur valeur à utiliser doit être 
+une valeur ligèrement inferieur à 100. Mais avec le randomForest du R, cette choix est
+fait automatiquement par le logiciel. 
+
+```{r}
+Y_pred_RF <- predict(mod_RF,carseat.test)
+RMSE_RF = RMSE(carseat.test[, 1], Y_pred_RF)
+RMSE_RF
+```
+
+### Bagging
+
+Le bagging, d'autre part, considère encore une fois tous les paramètres. Mais cette fois-ci, il enlève plusieurs échantillons.
+Il donc construit différentes bases de entrainement avec échantillons aleatoirs de la base d'apprentissage. 
+Chaque base sera utilisé pour construire une arbre de régression différent. 
+Encore une fois, tous les arbres seront utilisés pour construire lé résultat final. 
+
+```{r}
+cont = rpart.control(minsplit = 2, cp = 0.0001)
+B = 2000
+Y <- matrix(0, nrow(carseat.test), B)
+for (i in 1:B) {
+  u = sample(1:nrow(carseat.train), nrow(carseat.train), replace = TRUE)
+  appren <- carseat.train[u, ]
+  mod_bag <- rpart(Sales ~., data = appren, control = cont)
+  Y[, i] <- predict(mod_bag, newdata = carseat.test)
+}
+
+Y_pred_bag = apply(Y, 1, mean)  # mean of each tree`s result
+RMSE_bag = RMSE(carseat.test[, 1], Y_pred_bag)
+RMSE_bag
+```
+
+### Boosting
+
+Le boosting est un cas particulier de Bagging. 
+Mais dans ce cas, pour construire des échantillons d'apprentissage, il faut priorizer les données qui ont reçus l'erreur le plus importante
+avec le dernière modèle construit.
+Cette idée est important afin de améliorer la précision du modèle. 
+
+```{r}
+library(gbm)
+mod_boosted <- gbm(Sales ~., data = carseat.train, n.trees = 10000, cv.folds = 10)
+par(mfrow = c(1, 1))
+best.iter <- gbm.perf(mod_boosted, method = "cv")
+par(mfrow = c(1, 2))
+summary(mod_boosted, n.trees = best.iter)
+f.predict <- predict(mod_boosted, carseat.test[, -1], best.iter)
+RMSE_bos = RMSE(carseat.test[, 1], f.predict)
+RMSE_bos
+```
+
+## 3. Quelle est l'approche qui donne les meilleurs résultats sur l'ensemble test ?
+
+```{r}
+c(RMSE_cart, RMSE_RF, RMSE_bag, RMSE_bos)
+```
+
+L'approche qui donne les meilleurs résultats sur l'ensemble test, c'est le boosting. 
+
+## 4. Si on décide de mettre en place un modèle linéaire avec une sélection backward sur les tests d'influence des variables, comment faut-il procéder ?
+
+Pour identifier les variables significatives, on peut procèder par deux stratégies: AIC et BIC. 
+La différence entre eux, c'est que le critére pour éliminer des variables sont differents. 
+Pour l'AIC, c'est le critère de Akaike, tandis que pour le BIC, c'est le critère Bayesienne. 
+Avec AIC, la pénalité est de 2k, alors qu'avec BIC, la pénalité est de ln(n)k.
+
+```{r}
+mod_lineire = lm(Sales~., data = carseat)
+summary(mod_lineire)
+```
+
+```{r}
+slm_AIC = step(mod_lineire, direction="backward", k = 2)
+```
+
+Avec le modèle AIC, on arrive aux variables 
+explicatives Income, Age, Advertising, CompPrice, ShelveLoc et Price.
+
+```{r}
+slm_BIC = step(mod_lineire, direction="backward", k = log(nrow(carseat)))
+```
+
+Avec le BIC, on arrive aux mêmes variables. 
