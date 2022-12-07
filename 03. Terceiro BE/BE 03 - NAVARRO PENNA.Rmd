@@ -54,6 +54,30 @@ carseat.test = carseat[-u,]
 
 ## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et les inconvénients de chacun de ces modèles. Illustrer cela sur les données à disposition.
 
+### CART
+
+```{r}
+library(rpart)
+cont = rpart.control(cp = 0.0001)  # define minimum cp
+mod_tree <- rpart(class ~., data = carseat.train, control = cont)
+par(mfrow = c(1, 1))
+plot(mod_tree, uniform = TRUE, margin = 0.05)
+text(mod_tree, cex = 0.6)
+```
+
+```{r}
+library(DiceEval)
+y_pred_tree <- predict(mod_tree_pruned, housing.test[, -p])
+RMSE_cart = RMSE(housing.test[, p], y_pred_tree)
+RMSE_cart
+```
+
+### Random forest
+
+### bagging
+
+### Boosting
+
 ## 3. Quelle est l'approche qui donne les meilleurs résultats sur l'ensemble test ?
 
 ## 4. Si on décide de mettre en place un modèle linéaire avec une sélection backward sur les tests d'influence des variables, comment faut-il procéder ?
