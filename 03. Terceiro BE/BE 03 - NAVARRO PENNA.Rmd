@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 1. Lire les données «bitume.train.txt» et «bitume.test.txt».
 
 ## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres
-de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
+de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
 
 ## 3. Faire de même avec l'échantillon test.
 BONUS Faire une classification pour identifier des typologies différentes de spectres
@@ -31,7 +31,7 @@ BONUS Faire une classification pour identifier des typologies différentes de sp
 de classe. Y-a-t-il un lien ?
 
 ## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un
-modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR
+modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR
 et PLS on visualisera notamment les premières fonctions propres. Comparer
 la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
 
@@ -45,7 +45,7 @@ pénétrabilités observées sur les 2 ensembles : apprentissage et test.
 ## 1. Séparer les données en un ensemble d'apprentissage (70%) et un ensemble
 test (30%).
 
-## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et
+## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et
 les inconvénients de chacun de ces modèles. Illustrer cela sur les données à
 disposition.
 
