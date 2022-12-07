@@ -194,17 +194,19 @@ La raison pour cette conclusion est le fait qu’on voit que la plupart des poin
 ## 6. Pourrait-on essayer d'ajuster un modèle linéaire ?
 
 
-
 ```{r}
 bitume_train.lm <- lm(PENE ~., data = bitume_train)
 Y_pred_lm = predict(bitume_train.lm, bitume_test[, -1])
+
+RMSE_lasso = RMSE(bitume_test[, 1], Y_pred_lm)
+RMSE_lasso
+
+length(na.omit(bitume_train.lm$coefficients))
 ```
 
-
-
-
-
-
+C'est possible d'ajuster un modèle linéaire, mais ce modèle va avoir un performance baisse. 
+La cause de ce fait est la difference de quantité entre colomnes et lignes, 
+de manoiere que c'est pas possible de determiner tous les coefs de la regression, parce que n_col > n_lingnes
 
 
 
