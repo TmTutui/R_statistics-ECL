@@ -36,15 +36,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Exercice 2 : Carseats
 
+```{r}
+carseat = read.table("carseat.txt", header = T)
+summary(carseat)
+dim(carseat)
+```
+
 ## 1. Séparer les données en un ensemble d'apprentissage (70%) et un ensemble de test (30%).
 
 ```{r}
-carseat = read.table("carseat.txt", header = T)
-p = ncol(carseat)
-summary(carseat)
-dim(carseat)
 set.seed(23)
-u = sample(1:nrow(carseat), 300)
+apprentissage_fraction = as.integer(nrow(carseat) * 0.7)
+u = sample(1:nrow(carseat), apprentissage_fraction)
 carseat.train = carseat[u,]
 carseat.test = carseat[-u,]
 ```
