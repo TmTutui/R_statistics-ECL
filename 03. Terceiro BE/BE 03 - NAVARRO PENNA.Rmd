@@ -1,0 +1,55 @@
+---
+title: "BE3 - apprentissage statitique"
+author: "Tulio NAVARRO TUTUI, Filipe PENNA CERAVOLO SOARES"
+course: "Statistique appliquée aux sciences de l'ingénieur"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<!-- 
+    For reference:
+    - http://rmarkdown.rstudio.com>
+    - https://lms.fun-mooc.fr/c4x/UPSUD/42001S02/asset/RMarkdown.html
+ -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercice 1 : Bitume - approches PLS, PCR , Lasso
+
+## 1. Lire les données «bitume.train.txt» et «bitume.test.txt».
+
+## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres
+de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
+
+## 3. Faire de même avec l'échantillon test.
+BONUS Faire une classification pour identifier des typologies différentes de spectres
+(routines kmeans ou hclust). Tracer les pénétrabilités en fonction du numéro
+de classe. Y-a-t-il un lien ?
+
+## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un
+modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR
+et PLS on visualisera notamment les premières fonctions propres. Comparer
+la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
+
+## 5. Pour les 3 méthodes, représenter les pénétrabilités prédites en fonction des
+pénétrabilités observées sur les 2 ensembles : apprentissage et test.
+
+## 6. Pourrait-on essayer d'ajuster un modèle linéaire ?
+
+# Exercice 2 : Carseats
+
+## 1. Séparer les données en un ensemble d'apprentissage (70%) et un ensemble
+test (30%).
+
+## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et
+les inconvénients de chacun de ces modèles. Illustrer cela sur les données à
+disposition.
+
+## 3. Quelle est l'approche qui donne les meilleurs résultats sur l'ensemble test ?
+
+## 4. Si on décide de mettre en place un modèle linéaire avec une sélection backward
+sur les tests d'influence des variables, comment faut-il procéder ?
