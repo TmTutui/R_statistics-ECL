@@ -67,6 +67,19 @@ RMSE_PCR
 
 #### PLS
 
+```{r}
+bitume_pls <- plsr(class ~., 60, data = bitume_train)
+bitume_pls.cv <- crossval(bitume_pls, segments = 10)
+plot(MSEP(bitume_pls.cv))
+```
+
+```{r}
+Y_PLS = predict(bitume_pls, newdata = bitume_test, ncomp = nbcomp, type = "response")
+
+RMSE_PLS = RMSE(bitume_test[, p], Y_PLS)
+RMSE_PLS
+
+```
 
 #### Lasso
 ```{r}
