@@ -188,7 +188,8 @@ abline(a = 0, b = 1, col = "green")
 
 #### Conclusion
 
-En reganaxc
+En regardant les courbes de test, c’est évident que tous les modèles sont en train de surestimer les valeurs de pénétration dans la base de test.
+La raison pour cette conclusion est le fait qu’on voit que la plupart des points sont au-dessus de la courbe verte, que représente que la prédiction est parfaite.
 
 ## 6. Pourrait-on essayer d'ajuster un modèle linéaire ?
 
@@ -196,7 +197,7 @@ En reganaxc
 
 ```{r}
 bitume_train.lm <- lm(PENE ~., data = bitume_train)
-Y_pred_lm = predict(bitume_train.lm, housing.test[, -p])
+Y_pred_lm = predict(bitume_train.lm, bitume_test[, -1])
 ```
 
 
