@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 1. Lire les données «bitume.train.txt» et «bitume.test.txt».
 
 ```{r}
+set.seed(23)
 library(DiceEval)
 library(car)
 library(MASS)
@@ -31,7 +32,9 @@ bitume_train = read.table("bitume.train.txt", header = T)
 bitume_test  = read.table("bitume.test.txt", header = T)
 
 p = ncol(bitume_train)
+head(bitume_train)
 
+summary(bitume_train[, 1])
 ```
 
 ## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
@@ -46,37 +49,46 @@ p = ncol(bitume_train)
 
 ```{r}
 library(pls)
+y = as.matrix(housing.train[, 1])
+x = as.matrix(housing.train[, -1])
+
 #PCR
-bitume_pcr <- pcr(class ~., 60, data = bitume_train)
+bitume_train.pcr <- pcr(PENE ~., 30, data = bitume_train)
 ```
 
 Faire le choix du nombre de composantes par validation croisée en utilisant la routine crossval.
 
 ```{r}
-bitume_cv <- crossval(bitume_pcr, segments = 10)
+bitume_cv <- crossval(bitume_train.pcr, segments = 10)
 plot(MSEP(bitume_cv))
 ```
 
-```{r}
-nbcomp = aaaaaaaaaaaa  # choose best value according to the plot
-Y_PCR = predict(bitume_pcr, newdata = bitume_test, ncomp = nbcomp, type = "response") # nolint
+Aprés 21 on a un diminuition négligeable d'erreur, donc on choisi ce valeur pour n'avoir un modele trés complexe
 
-RMSE_PCR = RMSE(bitume_test[, p], Y_PCR)
+```{r}
+nbcomp_pcr = 21
+Y_PCR = predict(bitume_train.pcr, newdata = bitume_test, ncomp = nbcomp_pcr, type = "response") # nolint
+
+RMSE_PCR = RMSE(bitume_test[, 1], Y_PCR)
 RMSE_PCR
 ```
 
 #### PLS
 
 ```{r}
-bitume_pls <- plsr(class ~., 60, data = bitume_train)
-bitume_pls.cv <- crossval(bitume_pls, segments = 10)
-plot(MSEP(bitume_pls.cv))
+bitume_train.pls <- plsr(PENE ~., 30, data = bitume_train)
+bitume_train.pls.cv <- crossval(bitume_train.pls, segments = 10)
+plot(MSEP(bitume_train.pls.cv))
 ```
 
-```{r}
-Y_PLS = predict(bitume_pls, newdata = bitume_test, ncomp = nbcomp, type = "response")
+Dans ce cas, c'est claire que le nombre optimale de composants est 9, un fois que 
+l'erreur est le plus petite et la complexité n'est pas si grande.
 
-RMSE_PLS = RMSE(bitume_test[, p], Y_PLS)
+```{r}
+nbcomp_pls = 9
+Y_PLS = predict(bitume_train.pls, newdata = bitume_test, ncomp = nbcomp_pls, type = "response")
+
+RMSE_PLS = RMSE(bitume_test[, 1], Y_PLS)
 RMSE_PLS
 
 ```
@@ -88,8 +100,8 @@ RMSE_PLS
 #--------------------------------------------------------------
 
 library(lars)
-# y = as.matrix(bitume_train[, p])
-# x = as.matrix(bitume_train[, -p])
+y = as.matrix(bitume_train[, 1])
+x = as.matrix(bitume_train[, -1])
 # x_extend = x
 # 
 # # makes the binary combinations of all columns
@@ -99,7 +111,7 @@ library(lars)
 #   }
 # }
 
-mod_lasso = lars(bitume_train[, p], bitume_train[, -p], type = "lasso")
+mod_lasso = lars(x, y, type = "lasso")
 
 CV = cv.lars(x, y, K = 10, index=seq(from = 0, to = 1, length = 100),
              trace = FALSE, plot.it = TRUE, se = TRUE, type = "lasso", mode = "fraction")
@@ -108,10 +120,10 @@ CV = cv.lars(x, y, K = 10, index=seq(from = 0, to = 1, length = 100),
 
 
 ```{r}
+which.min(CV$cv.error)
+value = 0.5  # choisir valeur avec plus petite erreur
 
-value = aaaaaaaaaaaa  # choose best value according to the plot
-
-# newx = as.matrix(bitume_test[, -p])
+# newx = as.matrix(bitume_test[, -1])
 # for (i in 1:(p - 2))
 # {
 #   for (j in 2:(p - 1))
@@ -120,15 +132,81 @@ value = aaaaaaaaaaaa  # choose best value according to the plot
 #   }
 # }
 
-fits <- predict.lars(mod_lasso, bitume_test[, -p], s = value, mode = "frac")
+fits <- predict.lars(mod_lasso, bitume_test[, -1], s = value, mode = "frac")
 
-RMSE_lasso = RMSE(bitume_test[, p], fits$fit)
-
+RMSE_lasso = RMSE(bitume_test[, 1], fits$fit)
+RMSE_lasso
 ```
 
 ## 5. Pour les 3 méthodes, représenter les pénétrabilités prédites en fonction des pénétrabilités observées sur les 2 ensembles : apprentissage et test.
 
+#### PCR
+
+##### Train
+```{r}
+train_predictions = predict(bitume_train.pcr, newdata = bitume_train, ncomp = nbcomp_pcr, type = "response")
+plot(bitume_train$PENE, train_predictions, xlab="Penetration", ylab="Predicted penetration", main="Training Data")
+abline(a = 0, b = 1, col = "green")
+```
+
+##### Test
+```{r}
+plot(bitume_test$PENE, Y_PCR, xlab="Penetration", ylab="Predicted penetration", main="Test Data")
+abline(a = 0, b = 1, col = "green")
+```
+
+#### PLS
+
+##### Train
+```{r}
+train_predictions = predict(bitume_train.pls, newdata = bitume_train, ncomp = nbcomp_pls, type = "response")
+plot(bitume_train$PENE, train_predictions, xlab="Penetration", ylab="Predicted penetration", main="Training Data")
+abline(a = 0, b = 1, col = "green")
+```
+
+##### Test
+```{r}
+plot(bitume_test$PENE, Y_PLS, xlab="Penetration", ylab="Predicted penetration", main="Test Data")
+abline(a = 0, b = 1, col = "green")
+```
+
+
+#### Lasso
+
+##### Train
+```{r}
+train_fits <- predict.lars(mod_lasso, bitume_train[, -1], s = value, mode = "frac")
+plot(bitume_train$PENE, train_fits$fit, xlab="Penetration", ylab="Predicted penetration", main="Training Data")
+abline(a = 0, b = 1, col = "green")
+```
+
+##### Test
+```{r}
+plot(bitume_test$PENE, fits$fit, xlab="Penetration", ylab="Predicted penetration", main="Test Data")
+abline(a = 0, b = 1, col = "green")
+```
+
+#### Conclusion
+
+En reganaxc
+
 ## 6. Pourrait-on essayer d'ajuster un modèle linéaire ?
+
+
+
+```{r}
+bitume_train.lm <- lm(PENE ~., data = bitume_train)
+Y_pred_lm = predict(bitume_train.lm, housing.test[, -p])
+```
+
+
+
+
+
+
+
+
+
 
 # Exercice 2 : Carseats
 
@@ -191,8 +269,13 @@ text(mod_tree_pruned, use.n = TRUE, cex = 0.7)
 
 ```{r}
 library(DiceEval)
+<<<<<<< Updated upstream
 y_pred_tree <- predict(mod_tree_pruned, carseat.test[, -1])
 RMSE_cart = RMSE(carseat.test[, 1], y_pred_tree)
+=======
+y_pred_tree <- predict(mod_tree_pruned, housing.test[, -1])
+RMSE_cart = RMSE(housing.test[, 1], y_pred_tree)
+>>>>>>> Stashed changes
 RMSE_cart
 ```
 
