@@ -39,9 +39,27 @@ summary(bitume_train[, 1])
 
 ## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
 
+```{r}
+matplot(t(bitume_train[, -1]), type="l", xlab = "longuer d'onde", ylab = "absorbance")
+hist(bitume_train[, 1])
+```
+
 ## 3. Faire de même avec l'échantillon test.
 
+```{r}
+matplot(t(bitume_test[, -1]), type="l", xlab = "longuer d'onde", ylab = "absorbance")
+hist(bitume_test[, 1])
+```
+
+On observe une allure similaire entre la longuer d'onde de l'échantillon de test et celui d'apprentissage. 
+Par contre, l'histogramme révele un profil different de pénétrabilités.    
+
 ## BONUS Faire une classification pour identifier des typologies différentes de spectres (routines kmeans ou hclust). Tracer les pénétrabilités en fonction du numéro de classe. Y-a-t-il un lien ?
+
+```{r}
+bitume_train_normal <- scale(bitume_train)
+# resKM <- kmeans(data, centers = .., nstart = 20)
+```
 
 ## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR et PLS on visualisera notamment les premières fonctions propres. Comparer la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
 
