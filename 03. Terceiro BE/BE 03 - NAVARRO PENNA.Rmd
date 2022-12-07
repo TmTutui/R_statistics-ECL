@@ -42,6 +42,30 @@ p = ncol(bitume_train)
 
 ## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR et PLS on visualisera notamment les premières fonctions propres. Comparer la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
 
+#### PCR
+
+```{r}
+library(pls)
+#PCR
+bitume_pcr <- pcr(class ~., 60, data = bitume_train)
+```
+
+Faire le choix du nombre de composantes par validation croisée en utilisant la routine crossval.
+
+```{r}
+bitume_cv <- crossval(bitume_pcr, segments = 10)
+plot(MSEP(bitume_cv))
+```
+
+```{r}
+nbcomp = aaaaaaaaaaaa  # choose best value according to the plot
+Y_PCR = predict(bitume_pcr, newdata = bitume_test, ncomp = nbcomp, type = "response") # nolint
+
+RMSE_PCR = RMSE(bitume_test[, p], Y_PCR)
+RMSE_PCR
+```
+
+#### PLS
 
 
 #### Lasso
@@ -51,49 +75,39 @@ p = ncol(bitume_train)
 #--------------------------------------------------------------
 
 library(lars)
-y = as.matrix(bitume_train[, p])
-x = as.matrix(bitume_train[, -p])
-x_extend = x
+# y = as.matrix(bitume_train[, p])
+# x = as.matrix(bitume_train[, -p])
+# x_extend = x
+# 
+# # makes the binary combinations of all columns
+# for (i in 1:(p - 2)) {
+#   for (j in 2:(p - 1)) {
+#     x_extend = cbind(x_extend, x[, i] * x[, j])
+#   }
+# }
 
-# makes the binary combinations of all columns
-for (i in 1:(p - 2)) {
-  for (j in 2:(p - 1)) {
-    x_extend = cbind(x_extend, x[, i] * x[, j])
-  }
-}
+mod_lasso = lars(bitume_train[, p], bitume_train[, -p], type = "lasso")
 
-mod_lasso = lars(x_extend, y, type = "lasso")
+CV = cv.lars(x, y, K = 10, index=seq(from = 0, to = 1, length = 100),
+             trace = FALSE, plot.it = TRUE, se = TRUE, type = "lasso", mode = "fraction")
 
 ```
 
-```{r}
-par(mfrow = c(1, 1))
-plot(mod_lasso, cex = 1, lwd = 3, col = 1:(p-1))
-legend(
-  0,
-  0,
-  names(bitume_train[, -p]),
-  col = 1:(p - 1),
-  lty = rep(1, p - 1),
-  lwd = rep(3, p - 1),
-  cex = 0.5
-)
-```
 
 ```{r}
 
-value = skjbldahiba  # chose best value according to the plot
+value = aaaaaaaaaaaa  # choose best value according to the plot
 
-newx = as.matrix(bitume_test[, -p])
-for (i in 1:(p - 2))
-{
-  for (j in 2:(p - 1))
-  {
-    newx = cbind(newx, newx[, i] * newx[, j])
-  }
-}
+# newx = as.matrix(bitume_test[, -p])
+# for (i in 1:(p - 2))
+# {
+#   for (j in 2:(p - 1))
+#   {
+#     newx = cbind(newx, newx[, i] * newx[, j])
+#   }
+# }
 
-fits <- predict.lars(mod_lasso, newx, s = value, mode = "frac")
+fits <- predict.lars(mod_lasso, bitume_test[, -p], s = value, mode = "frac")
 
 RMSE_lasso = RMSE(bitume_test[, p], fits$fit)
 
