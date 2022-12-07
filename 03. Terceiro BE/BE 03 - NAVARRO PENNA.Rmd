@@ -22,34 +22,35 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Lire les données «bitume.train.txt» et «bitume.test.txt».
 
-## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres
-de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
+## 2. Visualiser sur le même graphes avec des couleurs différentes les 35 spectres de l'échantillon d'apprentissage. Tracer l'histogramme des pénétrabilités correspondantes.
 
 ## 3. Faire de même avec l'échantillon test.
-BONUS Faire une classification pour identifier des typologies différentes de spectres
-(routines kmeans ou hclust). Tracer les pénétrabilités en fonction du numéro
-de classe. Y-a-t-il un lien ?
 
-## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un
-modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR
-et PLS on visualisera notamment les premières fonctions propres. Comparer
-la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
+## BONUS Faire une classification pour identifier des typologies différentes de spectres (routines kmeans ou hclust). Tracer les pénétrabilités en fonction du numéro de classe. Y-a-t-il un lien ?
 
-## 5. Pour les 3 méthodes, représenter les pénétrabilités prédites en fonction des
-pénétrabilités observées sur les 2 ensembles : apprentissage et test.
+## 4. Ajuster un modèle PCR et PLS (fonction pcr et plsr du package pls) puis un modèle lasso. Expliquer les différentes étapes de la sélection des hyperparamètres des méthodes. Interpréter les modèles obtenus. Pour les modèles PCR et PLS on visualisera notamment les premières fonctions propres. Comparer la qualité prédictive sur l'ensemble test des modèles ainsi "calibrés".
+
+## 5. Pour les 3 méthodes, représenter les pénétrabilités prédites en fonction des pénétrabilités observées sur les 2 ensembles : apprentissage et test.
 
 ## 6. Pourrait-on essayer d'ajuster un modèle linéaire ?
 
 # Exercice 2 : Carseats
 
-## 1. Séparer les données en un ensemble d'apprentissage (70%) et un ensemble
-test (30%).
+## 1. Séparer les données en un ensemble d'apprentissage (70%) et un ensemble de test (30%).
 
-## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et
-les inconvénients de chacun de ces modèles. Illustrer cela sur les données à
-disposition.
+```{r}
+carseat = read.table("carseat.txt", header = T)
+p = ncol(carseat)
+summary(carseat)
+dim(carseat)
+set.seed(23)
+u = sample(1:nrow(carseat), 300)
+carseat.train = carseat[u,]
+carseat.test = carseat[-u,]
+```
+
+## 2. Mettre en place un modèle CART, RF, bagging et boosting. Expliquer précisément les différentes étapes de la mise en oeuvre. Donner les avantages et les inconvénients de chacun de ces modèles. Illustrer cela sur les données à disposition.
 
 ## 3. Quelle est l'approche qui donne les meilleurs résultats sur l'ensemble test ?
 
-## 4. Si on décide de mettre en place un modèle linéaire avec une sélection backward
-sur les tests d'influence des variables, comment faut-il procéder ?
+## 4. Si on décide de mettre en place un modèle linéaire avec une sélection backward sur les tests d'influence des variables, comment faut-il procéder ?
