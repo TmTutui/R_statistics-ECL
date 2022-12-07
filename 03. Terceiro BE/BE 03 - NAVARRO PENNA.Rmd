@@ -222,9 +222,10 @@ RMSE_lasso
 length(na.omit(bitume_train.lm$coefficients))
 ```
 
-C'est possible d'ajuster un modèle linéaire, mais ce modèle va avoir un performance baisse. 
-La cause de ce fait est la difference de quantité entre colomnes et lignes, 
-de manoiere que c'est pas possible de determiner tous les coefs de la regression, parce que n_col > n_lingnes
+C'est possible d'ajuster un modèle linéaire, mais ce modèle va avoir une performance baisse.
+La cause de ce fait est la différence de quantité entre colonnes et lignes,
+de manière que ce n'est pas possible de déterminer tous les coefficients de la régression, parce que n_colonnes > n_lignes.
+
 
 
 
