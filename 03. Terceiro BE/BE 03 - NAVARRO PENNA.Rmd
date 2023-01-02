@@ -32,7 +32,7 @@ bitume_train = read.table("bitume.train.txt", header = T)
 bitume_test  = read.table("bitume.test.txt", header = T)
 
 p = ncol(bitume_train)
-head(bitume_train)
+# head(bitume_train)
 
 summary(bitume_train[, 1])
 ```
@@ -67,8 +67,6 @@ bitume_train_normal <- scale(bitume_train)
 
 ```{r}
 library(pls)
-y = as.matrix(housing.train[, 1])
-x = as.matrix(housing.train[, -1])
 
 #PCR
 bitume_train.pcr <- pcr(PENE ~., 30, data = bitume_train)
@@ -90,6 +88,20 @@ Y_PCR = predict(bitume_train.pcr, newdata = bitume_test, ncomp = nbcomp_pcr, typ
 RMSE_PCR = RMSE(bitume_test[, 1], Y_PCR)
 RMSE_PCR
 ```
+
+```{r}
+#tracer des premières fonctions propres 
+# par(mfrow = c(1,1))
+# plot(1:(p-1), bitume_train.pcr$loadings[1:(p_train-1), 1], type = "l", col = 1)
+# points(1:(p-1), bitume_train.pcr$loadings[1:(p_train-1), 1], col = 1)
+# 
+# for (i in 2:4)
+# {
+#   points(1:(p-1), bitume_train.pcr$loadings[1:(p_train-1), i], col = i)
+#   lines(1:(p-1), bitume_train.pcr$loadings[1:(p_train-1), i], col = i)
+# }
+```
+
 
 #### PLS
 
